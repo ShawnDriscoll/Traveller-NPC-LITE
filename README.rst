@@ -1,0 +1,32 @@
+**LITE CharGen for Traveller**
+==============================
+
+This **LITE CharGen for Traveller** is a Classic Python 2.5 program for generating NPCs for Traveller. For now, it'll just be generating each Traveller's name, age, UPP, and sex.
+
+
+The Traveller game in all forms is owned by Far Future Enterprises.
+Copyright 1977 - 2020 Far Future Enterprises.
+Traveller is a registered trademark of Far Future Enterprises.
+
+
+Requirements
+------------
+
+* **Windows XP/7/8/10**
+
+   It might not work in OSX or Linux.
+
+* **bottle 0.12.13**
+
+   The plan is to view the generated Travellers in the web browser.
+
+
+Warning
+-------
+
+**LITE CharGen for Traveller** will not work with **Python 2.6+**.
+
+
+Contact
+-------
+Questions? Please contact shawndriscoll@hotmail.com
