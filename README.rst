@@ -22,6 +22,11 @@ Requirements
 * **bottle 0.12.13**
 
    The plan is to view the generated Travellers in the web browser.
+   
+* **colorama 0.2.7**
+
+   Because the dice roller may have some colored text messages for debugging. The colorama
+   code in diceroll.py can be removed if it is not needed, however.
 
 
 Warning
