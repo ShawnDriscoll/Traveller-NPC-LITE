@@ -70,8 +70,7 @@ def app():
             
             if len(word) > 3 and len(word) < 11:
                 proper = True
-            chr(ord(word[0]) - 32) + word[1:len(word)]
-        return word
+        return chr(ord(word[0]) - 32) + word[1:len(word)]
         
     # UPP Code Table
 
@@ -240,8 +239,8 @@ def app():
         for key in characteristic_name:
             characteristic[key] = roll('2d6') # normal two 6-sided roll
             #characteristic[key] = roll('boon') # Method I roll
-            #characteristic[key] = roll('1d6') + 6 # Nexus roll
-        #print characteristic
+            #characteristic[key] = roll('1d6+6') # Nexus roll
+        print characteristic
         
         # Generate NPC's name
         
