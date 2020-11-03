@@ -14,6 +14,7 @@
 from rpg_tools.diceroll import roll
 import os
 import logging
+from random import randint
 
 from testing import testing
 
@@ -36,7 +37,42 @@ def app():
             + fc_sounds[randint(1, len(fc_sounds)) - 1]
         if s_type == CC:
             sound = mc_sounds[randint(1, len(mc_sounds)) - 1]
-
+        return sound
+        
+    def gen_word():
+        proper = False
+        while not(proper):
+            temp = CC
+            while temp == CC:
+                temp = syllable_type[randint(1, len(syllable_type)) - 1]
+            s_type = temp
+            word = pick_sound(s_type)
+            #word = sound
+            building = True
+            while building:
+                syllable = syllable_type[randint(1, len(syllable_type)) - 1]
+                while temp == CC and (syllable == CV or syllable == CVC or syllable == CC):
+                    syllable = syllable_type[randint(1, len(syllable_type)) - 1]
+                while temp == V and (syllable == V or syllable == VC):
+                    syllable = syllable_type[randint(1, len(syllable_type)) - 1]
+                while temp == CV and (syllable == V or syllable == VC):
+                    syllable = syllable_type[randint(1, len(syllable_type)) - 1]
+                while temp == VC and (syllable == CV or syllable == CVC or syllable == CC):
+                    syllable = syllable_type[randint(1, len(syllable_type)) - 1]
+                while temp == CVC and (syllable == CV or syllable == CVC or syllable == CC):
+                    syllable = syllable_type[randint(1, len(syllable_type)) - 1]
+                if temp == VC or temp == CVC:
+                    building = False
+                else:
+                    s_type = syllable
+                    word += pick_sound(s_type)
+                    #word += sound
+                    temp = syllable
+            
+            if len(word) > 3 and len(word) < 11:
+                proper = True
+        return word
+        
     # UPP Code Table
 
     hex_code = ['0', '1', '2', '3', '4', '5', '6',
@@ -101,6 +137,12 @@ def app():
     Scout = 11
     Psion = 12
     
+    male = 'Male'
+    female = 'Female'
+    random_sex = True
+    sex_chosen = 'Random'
+    sex = ''
+    
     # Characteristic Names
     
     characteristic_name = ['STR', 'DEX', 'END', 'INT', 'EDU', 'SOC']
@@ -158,9 +200,37 @@ def app():
     syllable_type = [V,V,V,V,V,V,V,V,VC,VC,VC,VC,CV,CV,CV,CV,CVC,CVC,CVC,CVC,CVC,CVC,CC,CC]
     #print syllable_type
     
-    # Gen 10 NPCs
+    ic_sounds = []
+    for i in range(len(ic_freq)):
+        for j in range(ic_freq[i]):
+            ic_sounds.append(ic_sound[i])
+    v_sounds = []
+    for i in range(len(v_freq)):
+        for j in range(v_freq[i]):
+            v_sounds.append(v_sound[i])
+    mc_sounds = []
+    for i in range(len(mc_freq)):
+        for j in range(mc_freq[i]):
+            mc_sounds.append(mc_sound[i])
+    fc_sounds = []
+    for i in range(len(fc_freq)):
+        for j in range(fc_freq[i]):
+            fc_sounds.append(fc_sound[i])
+                    
+    # print ic_sounds
+    # print
+    # print v_sounds
+    # print
+    # print mc_sounds
+    # print
+    # print fc_sounds
+    
+    # Generate 10 NPCs
     
     for i in range(10):
+    
+        # What are the six characteristics for this NPC?
+        
         characteristic = {}
         #
         # Create a dictionary for the NPC's characteristics.
@@ -168,9 +238,54 @@ def app():
         # wanted to learn how to do dict for a change.
         #
         for key in characteristic_name:
-            characteristic[key] = roll('2d6') # two 6-sided dice
-        print characteristic
+            characteristic[key] = roll('2d6') # normal two 6-sided roll
+            #characteristic[key] = roll('boon') # Method I roll
+            #characteristic[key] = roll('1d6') + 6 # Nexus roll
+        #print characteristic
         
+        # Generate NPC's name
+        
+        sex = ''
+        while sex <> sex_chosen:
+            word = gen_word()
+
+            if ord(word[0]) > 96:
+                first_name = chr(ord(word[0]) - 32) + word[1:len(word)]
+            else:
+                first_name = word
+
+            word = gen_word()
+            last_name = chr(ord(word[0]) - 32) + word[1:len(word)]
+
+            word = gen_word()
+            middle_name = chr(ord(word[0]) - 32) + word[1:len(word)]
+
+            if len(first_name) > len(last_name):
+                temp = first_name
+                first_name = last_name
+                last_name = temp
+
+            if first_name[len(first_name) - 1] == 'a' \
+                   or first_name[len(first_name) - 3:len(first_name)] == 'nny' \
+                   or first_name[len(first_name) - 2:len(first_name)] == 'ne' \
+                   or first_name[len(first_name) - 2:len(first_name)] == 'se' \
+                   or first_name[len(first_name) - 2:len(first_name)] == 'ie' \
+                   or first_name[len(first_name) - 1] == 'i' \
+                   or first_name[len(first_name) - 3:len(first_name)] == 'del' \
+                   or first_name[len(first_name) - 2:len(first_name)] == 'ly' \
+                   or first_name[len(first_name) - 2:len(first_name)] == 'll' \
+                   or first_name[len(first_name) - 4:len(first_name)] == 'lynn' \
+                   or first_name[len(first_name) - 2:len(first_name)] == 'le' \
+                   or first_name[len(first_name) - 3:len(first_name)] == 'ndy' \
+                   or first_name[0:2] == 'Gw' \
+                   or first_name[0:2] == 'Qu':
+                sex = female
+            else:
+                sex = male
+            if random_sex:
+                sex_chosen = sex
+                
+        print first_name, middle_name, last_name, '(', sex, ')'
 
 #
 # Program exits here!
