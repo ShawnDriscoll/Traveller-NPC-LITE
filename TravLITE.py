@@ -16,7 +16,6 @@ import os
 import logging
 from random import randint
 
-from testing import testing
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
 __app__ = 'TravLITE 0.0.1'
@@ -71,6 +70,7 @@ def app():
             
             if len(word) > 3 and len(word) < 11:
                 proper = True
+            chr(ord(word[0]) - 32) + word[1:len(word)]
         return word
         
     # UPP Code Table
@@ -247,18 +247,9 @@ def app():
         
         sex = ''
         while sex <> sex_chosen:
-            word = gen_word()
-
-            if ord(word[0]) > 96:
-                first_name = chr(ord(word[0]) - 32) + word[1:len(word)]
-            else:
-                first_name = word
-
-            word = gen_word()
-            last_name = chr(ord(word[0]) - 32) + word[1:len(word)]
-
-            word = gen_word()
-            middle_name = chr(ord(word[0]) - 32) + word[1:len(word)]
+            first_name = gen_word()
+            last_name = gen_word()
+            middle_name = gen_word()
 
             if len(first_name) > len(last_name):
                 temp = first_name
