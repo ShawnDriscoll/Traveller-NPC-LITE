@@ -1,9 +1,10 @@
 #
 # The beginnings of a LITE chargen app for Traveller NPCs.
+# https://github.com/ShawnDriscoll/Traveller-NPC-LITE
 #
 # Written for Python 2.5.4.
 #
-# bottle will be needed in the future at some point in this code.
+# bottle will be needed in the future at some point for this code.
 #
 #
 # The Traveller game in all forms is owned by Far Future Enterprises.
@@ -25,6 +26,9 @@ __version__ = '0.0.1'
 def app():
 
     def pick_sound(s_type):
+        '''
+        Pick a vowel or consonant, as well as initial and final ones.
+        '''
         if s_type == V:
             sound = v_sounds[randint(1, len(v_sounds)) - 1]
         if s_type == CV:
@@ -38,7 +42,10 @@ def app():
             sound = mc_sounds[randint(1, len(mc_sounds)) - 1]
         return sound
         
-    def gen_word(l):
+    def gen_word(length):
+        '''
+        Generate a word
+        '''
         proper = False
         while not(proper):
             temp = CC
@@ -66,28 +73,45 @@ def app():
                     word += pick_sound(s_type)
                     temp = syllable
             
-            if len(word) > 3 and len(word) < l:
+            if len(word) > 3 and len(word) < length:
                 proper = True
         return chr(ord(word[0]) - 32) + word[1:len(word)]
     
     def grind(characteristic, job, terms, age):
+        '''
+        Grind the NPC in this.
+        '''
         terms = roll('2d6-2')
         if terms == 0:
+        
+            # No career
             name_title = 'Young'
             job = 'None'
         else:
-            #print characteristic, job, grinder[job][0], grinder[job][1]
             if terms > grinder[job][1]:
                 temp = grinder[job][1]
             else:
                 temp = terms
             characteristic[grinder[job][0]] += temp
+            
             if terms > len(grinder[job][2]):
                 temp = len(grinder[job][2])-1
             else:
                 temp = terms
             name_title = grinder[job][2][randint(1,temp)-1]
+            
+            # NPC ages
             age += terms * 4
+            
+            # NPC could have crisis
+            crisis = (age - 34) / 4
+            if crisis > 0:
+                for i in range(crisis):
+                    temp = roll('1d3-1')
+                    characteristic[characteristic_name[temp]] -= roll('1d3')
+                    if characteristic[characteristic_name[temp]] < 1:
+                        characteristic[characteristic_name[temp]] = 1
+            
         return terms, age, name_title, job
         
     # UPP Code Table
@@ -153,19 +177,6 @@ def app():
                     'Extraordinary',
                     'Extreme',
                     'Supreme']
-                             
-    Agent = 0
-    Army = 1
-    Citizen = 2
-    Drifter = 3
-    Entertainer = 4
-    Marines = 5
-    Merchants = 6
-    Navy = 7
-    Nobility = 8
-    Rogue = 9
-    Scholar = 10
-    Scout = 11
     
     male = 'Male'
     female = 'Female'
@@ -300,12 +311,13 @@ def app():
         age = 18 + roll('1D4') - roll('1D4')
         chosen_career = roll('1d12-1')
         terms = 0
+        vp_soc = characteristic['SOC']
         print '[' + hex_code[characteristic['STR']] + \
                     hex_code[characteristic['DEX']] + \
                     hex_code[characteristic['END']] + \
                     hex_code[characteristic['INT']] + \
                     hex_code[characteristic['EDU']] + \
-                    noble_hex_code[characteristic['SOC']] + ']', age
+                    noble_hex_code[characteristic['SOC']] + ']', age, social_class[vp_soc]
                                                         
         terms, age, name_title, job = grind(characteristic, career[chosen_career], terms, age)
 
