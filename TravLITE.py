@@ -73,8 +73,8 @@ def app():
     def grind(characteristic, job, terms, age):
         terms = roll('2d6-2')
         if terms == 0:
-            print 'No career.'
-            name_title = ''
+            name_title = 'Young'
+            job = 'None'
         else:
             #print characteristic, job, grinder[job][0], grinder[job][1]
             if terms > grinder[job][1]:
@@ -88,7 +88,7 @@ def app():
                 temp = terms
             name_title = grinder[job][2][randint(1,temp)-1]
             age += terms * 4
-        return terms, age, name_title
+        return terms, age, name_title, job
         
     # UPP Code Table
 
@@ -307,11 +307,8 @@ def app():
                     hex_code[characteristic['EDU']] + \
                     noble_hex_code[characteristic['SOC']] + ']', age
                                                         
-        terms, age, name_title = grind(characteristic, career[chosen_career], terms, age)
-        
-        if terms == 0:
-            name_title = 'Young'
-        
+        terms, age, name_title, job = grind(characteristic, career[chosen_career], terms, age)
+
         if characteristic['SOC'] > 10:
             if sex == male:
                 if characteristic['SOC'] > 11:
@@ -341,14 +338,10 @@ def app():
                                hex_code[characteristic['END']] + \
                                hex_code[characteristic['INT']] + \
                                hex_code[characteristic['EDU']] + \
-                               noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, career[chosen_career], terms)
+                               noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, job, terms)
 #
 # Program exits here!
 #
-
-
-    
-    
 
 
 if __name__ == '__main__':
