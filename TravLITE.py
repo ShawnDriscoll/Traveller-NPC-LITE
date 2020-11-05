@@ -46,7 +46,6 @@ def app():
                 temp = syllable_type[randint(1, len(syllable_type)) - 1]
             s_type = temp
             word = pick_sound(s_type)
-            #word = sound
             building = True
             while building:
                 syllable = syllable_type[randint(1, len(syllable_type)) - 1]
@@ -65,12 +64,21 @@ def app():
                 else:
                     s_type = syllable
                     word += pick_sound(s_type)
-                    #word += sound
                     temp = syllable
             
             if len(word) > 3 and len(word) < 11:
                 proper = True
         return chr(ord(word[0]) - 32) + word[1:len(word)]
+    
+    def grind(characteristic, job, terms, age):
+        terms = roll('2d6-2')
+        if terms == 0:
+            print 'No career.'
+        else:
+            print characteristic, job, grinder[job][0], grinder[job][1]
+            age += terms * 4
+            characteristic['SOC'] = 19
+        return terms, age
         
     # UPP Code Table
 
@@ -87,9 +95,23 @@ def app():
                       'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H']
     
     career = ['Agent', 'Army', 'Citizen', 'Drifter', 'Entertainer', 'Marines', 'Merchants', 'Navy', 'Nobility',
-                  'Rogue', 'Scholar', 'Scout', 'Psion']
+              'Rogue', 'Scholar', 'Scout']
     career_count = len(career)
     left_career = []
+    
+    grinder = {'Agent'      : ['INT', 3, ['Rookie', 'Agent', 'Field Agent', 'Field Agent', 'Special Agent', 'Assistant Director', 'Director']],
+               'Army'       : ['STR', 4, ['Private', 'Lance Corporal', 'Corporal', 'Lance Sergeant', 'Sergeant', 'Gunnery Sergeant', 'Sergeant Major']],
+               'Citizen'    : ['EDU', 3, ['Citizen', 'Citizen', 'Technician', 'Technician', 'Craftsman', 'Craftsman', 'Master Technician']],
+               'Drifter'    : ['END', 3, ['Barbarian', 'Barbarian', 'Warrior', 'Warrior', 'Chieftain', 'Chieftain', 'Chieftain']],
+               'Entertainer': ['SOC', 5, ['Extra', 'Extra', 'Extra', 'Extra', 'Extra', 'Extra', 'Famous Performer']],
+               'Marines'    : ['STR', 4, ['Marine', 'Lance Corporal', 'Corporal', 'Lance Sergeant', 'Sergeant', 'Gunnery Sergeant', 'Sergeant Major']],
+               'Merchants'  : ['INT', 3, ['Crewman', 'Senior Crewman', '4th Officer', '3rd Officer', '2nd Officer', '1st Officer', 'Captain']],
+               'Navy'       : ['SOC', 6, ['Crewman', 'Able Spacehand', 'Petty Officer 3rd Class', 'Petty Officer 2nd Class', 'Petty Officer 1st Class', 'Chief Petty Officer', 'Master Chief']],
+               'Nobility'   : ['SOC', 7, ['Wastrel', 'Wastrel', 'Ingrate', 'Ingrate', 'Black Sheep', 'Black Sheep', 'Scoundrel']],
+               'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain']],
+               'Scholar'    : ['EDU', 3, ['', '', '', '', '', '', '']],
+               'Scout'      : ['END', 3, ['Trainee', 'Scout', 'Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout']]
+              }
     
     social_standing_male = ['NOT USED','NOT USED','NOT USED','NOT USED','NOT USED','NOT USED',
                             'NOT USED','NOT USED','NOT USED','NOT USED','NOT USED',
@@ -134,7 +156,6 @@ def app():
     Rogue = 9
     Scholar = 10
     Scout = 11
-    Psion = 12
     
     male = 'Male'
     female = 'Female'
@@ -240,7 +261,7 @@ def app():
             characteristic[key] = roll('2d6') # normal two 6-sided roll
             #characteristic[key] = roll('boon') # Method I roll
             #characteristic[key] = roll('1d6+6') # Nexus roll
-        print characteristic
+        #print characteristic
         
         # Generate NPC's name
         
@@ -274,8 +295,25 @@ def app():
                 sex = male
             if random_sex:
                 sex_chosen = sex
-                
-        print first_name, middle_name, last_name, '(', sex, ')'
+        
+        age = 18 + roll('1D4') - roll('1D4')
+        chosen_career = roll('1d12-1')
+        terms = 0
+        print '[' + hex_code[characteristic['STR']] + \
+                                                        hex_code[characteristic['DEX']] + \
+                                                        hex_code[characteristic['END']] + \
+                                                        hex_code[characteristic['INT']] + \
+                                                        hex_code[characteristic['EDU']] + \
+                                                        noble_hex_code[characteristic['SOC']] + ']', age
+        terms, age = grind(characteristic, career[chosen_career], terms, age)
+        print first_name, middle_name, last_name, '[' + hex_code[characteristic['STR']] + \
+                                                        hex_code[characteristic['DEX']] + \
+                                                        hex_code[characteristic['END']] + \
+                                                        hex_code[characteristic['INT']] + \
+                                                        hex_code[characteristic['EDU']] + \
+                                                        noble_hex_code[characteristic['SOC']] + ']', age, '(%s)' % sex
+        print 'terms', terms
+        print
 
 #
 # Program exits here!
