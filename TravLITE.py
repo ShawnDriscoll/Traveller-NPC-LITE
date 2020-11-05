@@ -38,7 +38,7 @@ def app():
             sound = mc_sounds[randint(1, len(mc_sounds)) - 1]
         return sound
         
-    def gen_word():
+    def gen_word(l):
         proper = False
         while not(proper):
             temp = CC
@@ -66,7 +66,7 @@ def app():
                     word += pick_sound(s_type)
                     temp = syllable
             
-            if len(word) > 3 and len(word) < 11:
+            if len(word) > 3 and len(word) < l:
                 proper = True
         return chr(ord(word[0]) - 32) + word[1:len(word)]
     
@@ -74,11 +74,21 @@ def app():
         terms = roll('2d6-2')
         if terms == 0:
             print 'No career.'
+            name_title = ''
         else:
-            print characteristic, job, grinder[job][0], grinder[job][1]
+            #print characteristic, job, grinder[job][0], grinder[job][1]
+            if terms > grinder[job][1]:
+                temp = grinder[job][1]
+            else:
+                temp = terms
+            characteristic[grinder[job][0]] += temp
+            if terms > len(grinder[job][2]):
+                temp = len(grinder[job][2])-1
+            else:
+                temp = terms
+            name_title = grinder[job][2][randint(1,temp)-1]
             age += terms * 4
-            characteristic['SOC'] = 19
-        return terms, age
+        return terms, age, name_title
         
     # UPP Code Table
 
@@ -218,7 +228,6 @@ def app():
         log.debug(fc_sound[i] + ' ' + str(fc_freq[i]))
 
     syllable_type = [V,V,V,V,V,V,V,V,VC,VC,VC,VC,CV,CV,CV,CV,CVC,CVC,CVC,CVC,CVC,CVC,CC,CC]
-    #print syllable_type
     
     ic_sounds = []
     for i in range(len(ic_freq)):
@@ -236,14 +245,6 @@ def app():
     for i in range(len(fc_freq)):
         for j in range(fc_freq[i]):
             fc_sounds.append(fc_sound[i])
-                    
-    # print ic_sounds
-    # print
-    # print v_sounds
-    # print
-    # print mc_sounds
-    # print
-    # print fc_sounds
     
     # Generate 10 NPCs
     
@@ -261,15 +262,15 @@ def app():
             characteristic[key] = roll('2d6') # normal two 6-sided roll
             #characteristic[key] = roll('boon') # Method I roll
             #characteristic[key] = roll('1d6+6') # Nexus roll
-        #print characteristic
         
         # Generate NPC's name
         
         sex = ''
         while sex <> sex_chosen:
-            first_name = gen_word()
-            last_name = gen_word()
-            middle_name = gen_word()
+            first_name = gen_word(11)
+            last_name = gen_word(11)
+            middle_name = gen_word(11)
+            homeworld_name = gen_word(14)
 
             if len(first_name) > len(last_name):
                 temp = first_name
@@ -300,21 +301,47 @@ def app():
         chosen_career = roll('1d12-1')
         terms = 0
         print '[' + hex_code[characteristic['STR']] + \
-                                                        hex_code[characteristic['DEX']] + \
-                                                        hex_code[characteristic['END']] + \
-                                                        hex_code[characteristic['INT']] + \
-                                                        hex_code[characteristic['EDU']] + \
-                                                        noble_hex_code[characteristic['SOC']] + ']', age
-        terms, age = grind(characteristic, career[chosen_career], terms, age)
-        print first_name, middle_name, last_name, '[' + hex_code[characteristic['STR']] + \
-                                                        hex_code[characteristic['DEX']] + \
-                                                        hex_code[characteristic['END']] + \
-                                                        hex_code[characteristic['INT']] + \
-                                                        hex_code[characteristic['EDU']] + \
-                                                        noble_hex_code[characteristic['SOC']] + ']', age, '(%s)' % sex
-        print 'terms', terms
-        print
-
+                    hex_code[characteristic['DEX']] + \
+                    hex_code[characteristic['END']] + \
+                    hex_code[characteristic['INT']] + \
+                    hex_code[characteristic['EDU']] + \
+                    noble_hex_code[characteristic['SOC']] + ']', age
+                                                        
+        terms, age, name_title = grind(characteristic, career[chosen_career], terms, age)
+        
+        if terms == 0:
+            name_title = 'Young'
+        
+        if characteristic['SOC'] > 10:
+            if sex == male:
+                if characteristic['SOC'] > 11:
+                    full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
+                else:
+                    full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+            else:
+                if characteristic['SOC'] > 11:
+                    full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
+                else:
+                    full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+        else:
+            if name_title == '':
+                #if skill_level[27] == 3:
+                if characteristic['INT'] == 11:
+                    full_name = 'Dr. ' + first_name + ' ' + last_name
+                #elif characteristic['EDU'] > 11 or skill_level[27] > 3:
+                elif characteristic['EDU'] > 11 or characteristic['INT'] > 11:
+                    full_name = 'Dr. ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                else:
+                    full_name = first_name + ' ' + last_name
+            else:
+                full_name = name_title + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                
+        print full_name, '[' + hex_code[characteristic['STR']] + \
+                               hex_code[characteristic['DEX']] + \
+                               hex_code[characteristic['END']] + \
+                               hex_code[characteristic['INT']] + \
+                               hex_code[characteristic['EDU']] + \
+                               noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, career[chosen_career], terms)
 #
 # Program exits here!
 #
