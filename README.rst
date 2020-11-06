@@ -28,6 +28,8 @@ Requirements
    Because the dice roller may have some colored text messages for debugging. The colorama
    code in diceroll.py can be removed if it is not needed, however.
 
+.. image:: images/video.png
+    :target: https://www.youtube.com/watch?v=VhvVPNhoPl4
 
 Warning
 -------
