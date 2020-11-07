@@ -77,10 +77,29 @@ def app():
                 proper = True
         return chr(ord(word[0]) - 32) + word[1:len(word)]
     
-    def grind(characteristic, job, terms, age):
+    def add_background_skills(skill):
+        temp = len(background_skills)
+        for i in range(4):
+            skill[background_skills[randint(1,temp)-1]] = 0
+        
+    def add_skill(job, skill, n):
+        temp = len(grinder[job][3])
+        for i in range(n):
+            picked_skill = grinder[job][3][randint(1,temp)-1]
+            if picked_skill in skill:
+                print picked_skill, '+1'
+                skill[picked_skill] += 1
+            else:
+                print picked_skill, '0'
+                skill[picked_skill] = 0
+    
+    def grind(characteristic, age):
         '''
         Grind the NPC in this.
         '''
+        skill = {}
+        add_background_skills(skill)
+        print skill
         terms = roll('2d6-2')
         if terms == 0:
         
@@ -88,6 +107,10 @@ def app():
             name_title = 'Young'
             job = 'None'
         else:
+            skill['Anglic Language'] = 0        # Default skill
+            skill['Jack of all Trades'] = 0     # Default skill
+            
+            job = career[roll('1d12-1')]
             if terms > grinder[job][1]:
                 temp = grinder[job][1]
             else:
@@ -100,6 +123,10 @@ def app():
                 temp = terms
             name_title = grinder[job][2][randint(1,temp)-1]
             
+            # Add skills per terms
+            for i in range(terms):
+                add_skill(job, skill, 2)
+            
             # NPC ages
             age += terms * 4
             
@@ -111,8 +138,13 @@ def app():
                     characteristic[characteristic_name[temp]] -= roll('1d3')
                     if characteristic[characteristic_name[temp]] < 1:
                         characteristic[characteristic_name[temp]] = 1
+                    else:
+                        add_skill(job, skill, 1)
+            else:
+                add_skill(job, skill, 1)
+        print skill
             
-        return terms, age, name_title, job
+        return terms, age, name_title, job, skill
         
     # UPP Code Table
 
@@ -133,18 +165,53 @@ def app():
     career_count = len(career)
     left_career = []
     
-    grinder = {'Agent'      : ['INT', 3, ['Rookie', 'Agent', 'Field Agent', 'Field Agent', 'Special Agent', 'Assistant Director', 'Director']],
-               'Army'       : ['STR', 4, ['Private', 'Lance Corporal', 'Corporal', 'Lance Sergeant', 'Sergeant', 'Gunnery Sergeant', 'Sergeant Major']],
-               'Citizen'    : ['EDU', 3, ['Citizen', 'Citizen', 'Technician', 'Technician', 'Craftsman', 'Craftsman', 'Master Technician']],
-               'Drifter'    : ['END', 3, ['Barbarian', 'Barbarian', 'Warrior', 'Warrior', 'Chieftain', 'Chieftain', 'Chieftain']],
-               'Entertainer': ['SOC', 5, ['Extra', 'Extra', 'Extra', 'Extra', 'Extra', 'Extra', 'Famous Performer']],
-               'Marines'    : ['STR', 4, ['Marine', 'Lance Corporal', 'Corporal', 'Lance Sergeant', 'Sergeant', 'Gunnery Sergeant', 'Sergeant Major']],
-               'Merchants'  : ['INT', 3, ['Crewman', 'Senior Crewman', '4th Officer', '3rd Officer', '2nd Officer', '1st Officer', 'Captain']],
-               'Navy'       : ['SOC', 6, ['Crewman', 'Able Spacehand', 'Petty Officer 3rd Class', 'Petty Officer 2nd Class', 'Petty Officer 1st Class', 'Chief Petty Officer', 'Master Chief']],
-               'Nobility'   : ['SOC', 7, ['Wastrel', 'Wastrel', 'Ingrate', 'Ingrate', 'Black Sheep', 'Black Sheep', 'Scoundrel']],
-               'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain']],
-               'Scholar'    : ['EDU', 3, ['', '', '', '', '', '', '']],
-               'Scout'      : ['END', 3, ['Trainee', 'Scout', 'Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout']]
+    background_skills = ['Animals', 'Zero-G Training', 'Survival Training', 'Seafarer', 'Computer Training', 'Streetwise', 'Vacc Suit Training', 'Profession', 'Carousing']
+    
+    skills = ['Administrating', 'Advocating', 'Animals', 'Athletics', 'Art', 'Astrogating', 'Battle Suit Training', 'Trading', 'Carousing',
+              'Telecomm', 'Computer Training', 'Deceiving', 'Diplomacy', 'Driving', 'Engineering', 'Explosives', 'Flying', 'Gambling',
+              'Gunnery', 'Gun Fighting', 'Heavy Weapons', 'Investigating', 'Jack of all Trades', 'Language', 'Leadership',
+              'Life Sciences', 'Mechanical Training', 'Medical Training', 'Melee', 'Navigating', 'Persuading', 'Piloting', 'Physical Sciences',
+              'Reconnaissance', 'Remote Operating', 'Seafaring', 'Sensor Reading', 'Social Sciences', 'Space Sciences', 'Stealth',
+              'Companion', 'Streetwise', 'Survival Training', 'Tactics', 'Profession', 'Vacc Suit Training', 'Zero-G Training',
+              'Animal Riding', 'Veterinary', 'Animal Training', 'Animal Farming',
+                     'Athletic Co-ord', 'Athletic Endurance', 'Athletic Strength', 'Jumping',
+                     'Acting', 'Dancing', 'Holography', 'Musical Training', 'Sculpting', 'Writing',
+                     'Mole Trucking', 'Tank Driving', 'Autocar Driving',
+                     'Gravitics', 'Jumpspace', 'Electronics', 'Life Support', 'Energy',
+                     'Grav Flying', 'Roto Flying', 'Aero Flying',
+                     'Turret Gunnery', 'Ortillery Gunnery', 'Ship Screens', 'Capital Weapons',
+                     'Slug Rifle', 'Slug Pistol', 'Shotgun', 'Energy Rifle', 'Energy Pistol',
+                     'Heavy Launchers', 'Portable Artillery', 'Field Artillery',
+                     'Anglic Language', 'Vilani Language', 'Zdetl Language', 'Oynprith Language',
+                     'Fist Fighting', 'Knife Fighting', 'Blunt Fighting', 'Sword Fighting',
+                     'Small Craft Piloting', 'Spacecraft Piloting', 'Capital Ship Helm',
+                     'Physics', 'Chemisty', 'Computer Science',
+                     'Biology', 'Cybernetics', 'Genetics', 'Psionicology',
+                     'Archeology', 'Economics', 'History', 'Linguistics',
+                     'Philosophy', 'Psychology', 'Political Science',
+                     'Planetology', 'Robotics', 'Xenology',
+                     'Sailboat Helm', 'Submarine Helm', 'Cruise Ship Helm', 'Motorboat Helm',
+                     'Military Tactics', 'Naval Tactics',
+                     'Bionetics', 'Civil Construction', 'Space Construction', 'Hydroponics', 'Polymers', 'Belter']
+    
+    grinder = {'Agent'      : ['INT', 3, ['Rookie', 'Agent', 'Field Agent', 'Field Agent', 'Special Agent', 'Assistant Director', 'Director'],
+                              ['Administrating', 'Carousing', 'Telecomm', 'Computer Training', 'Deceiving', 'Investigating', 'Language',
+                               'Streetwise', 'Slug Pistol', 'Energy Pistol', 'Vilani Language', 'Zdetl Language', 'Small Craft Piloting',
+                               'Political Science', 'Stealth']],
+               'Army'       : ['STR', 4, ['Private', 'Lance Corporal', 'Corporal', 'Lance Sergeant', 'Sergeant', 'Gunnery Sergeant', 'Sergeant Major'],
+                              ['Athletics', 'Explosives', 'Gunnery', 'Gun Fighting', 'Leadership', 'Mechanical Training', 'Medical Training', 'Melee',
+                               'Remote Operating', 'Survival Training', 'Tactics', 'Tank Driving', 'Slug Rifle', 'Slug Pistol', 'Energy Rifle', 'Energy Pistol',
+                               'Fist Fighting']],
+               'Citizen'    : ['EDU', 3, ['Citizen', 'Citizen', 'Technician', 'Technician', 'Craftsman', 'Craftsman', 'Master Technician'], ['Jack of all Trades', 'Biff']],
+               'Drifter'    : ['END', 3, ['Barbarian', 'Barbarian', 'Warrior', 'Warrior', 'Chieftain', 'Chieftain', 'Chieftain'], ['Jack of all Trades', 'Biff']],
+               'Entertainer': ['SOC', 5, ['Extra', 'Extra', 'Extra', 'Extra', 'Extra', 'Extra', 'Famous Performer'], ['Jack of all Trades', 'Biff']],
+               'Marines'    : ['STR', 4, ['Marine', 'Lance Corporal', 'Corporal', 'Lance Sergeant', 'Sergeant', 'Gunnery Sergeant', 'Sergeant Major'], ['Jack of all Trades', 'Biff']],
+               'Merchants'  : ['INT', 3, ['Crewman', 'Senior Crewman', '4th Officer', '3rd Officer', '2nd Officer', '1st Officer', 'Captain'], ['Jack of all Trades', 'Biff']],
+               'Navy'       : ['SOC', 6, ['Crewman', 'Able Spacehand', 'Petty Officer 3rd Class', 'Petty Officer 2nd Class', 'Petty Officer 1st Class', 'Chief Petty Officer', 'Master Chief'], ['Jack of all Trades', 'Biff']],
+               'Nobility'   : ['SOC', 7, ['Wastrel', 'Wastrel', 'Ingrate', 'Ingrate', 'Black Sheep', 'Black Sheep', 'Scoundrel'], ['Jack of all Trades', 'Biff']],
+               'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain'], ['Jack of all Trades', 'Biff']],
+               'Scholar'    : ['EDU', 3, ['', '', '', '', '', '', ''], ['Jack of all Trades', 'Biff']],
+               'Scout'      : ['END', 3, ['Trainee', 'Scout', 'Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout'], ['Jack of all Trades', 'Biff']]
               }
     
     social_standing_male = ['NOT USED','NOT USED','NOT USED','NOT USED','NOT USED','NOT USED',
@@ -264,12 +331,15 @@ def app():
         # What are the six characteristics for this NPC?
         
         characteristic = {}
+        
         #
         # Create a dictionary for the NPC's characteristics.
         # I could have used a list instead of a dict, but I
         # wanted to learn how to do dict for a change.
         #
+        
         for key in characteristic_name:
+        
             characteristic[key] = roll('2d6') # normal two 6-sided roll
             #characteristic[key] = roll('boon') # Method I roll
             #characteristic[key] = roll('1d6+6') # Nexus roll
@@ -309,8 +379,6 @@ def app():
                 sex_chosen = sex
         
         age = 18 + roll('1D4') - roll('1D4')
-        chosen_career = roll('1d12-1')
-        terms = 0
         vp_soc = characteristic['SOC']
         print '[' + hex_code[characteristic['STR']] + \
                     hex_code[characteristic['DEX']] + \
@@ -319,7 +387,7 @@ def app():
                     hex_code[characteristic['EDU']] + \
                     noble_hex_code[characteristic['SOC']] + ']', age, social_class[vp_soc]
                                                         
-        terms, age, name_title, job = grind(characteristic, career[chosen_career], terms, age)
+        terms, age, name_title, job, skill = grind(characteristic, age)
 
         if characteristic['SOC'] > 10:
             if sex == male:
