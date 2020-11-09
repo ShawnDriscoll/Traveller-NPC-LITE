@@ -1,5 +1,5 @@
 #
-# Use pysexe to perform the build process by running 'setup_TL.py'.
+# Uses py2exe to perform the build process when running 'setup_TL.py'.
 #
 # If everything works well, you should find a subdirectory named 'dist'
 # containing some files, with TravLITE.exe being amoung them.
