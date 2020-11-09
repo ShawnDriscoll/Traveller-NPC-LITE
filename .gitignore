@@ -25,7 +25,6 @@ Desktop.ini
 ## Python
 ############
 
-*.pyx
 *.pyc
 
 # Packages
