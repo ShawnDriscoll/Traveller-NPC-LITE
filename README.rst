@@ -27,6 +27,10 @@ Requirements
 
    Because the dice roller may have some colored text messages for debugging. The colorama
    code in diceroll.py can be removed if it is not needed, however.
+   
+* **py2exe 0.6.9**
+
+   Used by setup_TL.py for making EXEs of the Python code. Optional.
 
 Promo
 -----
