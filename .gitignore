@@ -30,6 +30,7 @@ Desktop.ini
 # Packages
 *.egg
 *.egg-info
+build/
 eggs/
 parts/
 var/
@@ -40,7 +41,7 @@ develop-eggs/
 #########
 ## gcc
 #########
-*.exe
+
 
 
 ############
