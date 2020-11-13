@@ -162,8 +162,8 @@ def app():
     
     career = ['Agent', 'Army', 'Citizen', 'Drifter', 'Entertainer', 'Marines', 'Merchants', 'Navy', 'Nobility',
               'Rogue', 'Scholar', 'Scout']
-    career_count = len(career)
-    left_career = []
+    #career_count = len(career)
+    #left_career = []
     
     background_skills = ['Animals', 'Zero-G Training', 'Survival Training', 'Seafarer', 'Computer Training', 'Streetwise', 'Vacc Suit Training', 'Profession', 'Carousing']
     
