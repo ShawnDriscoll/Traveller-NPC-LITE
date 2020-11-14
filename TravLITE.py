@@ -2,7 +2,8 @@
 # The beginnings of a LITE chargen app for Traveller NPCs.
 # https://github.com/ShawnDriscoll/Traveller-NPC-LITE
 #
-# Written for Python 2.5.4.
+# This LITE CharGen for Traveller is a Classic Python 2.5 program for generating
+# NPCs for Traveller. Skill generation is now being tested with this release.
 #
 # bottle will be needed in the future at some point for this code.
 #
@@ -19,8 +20,8 @@ from random import randint
 
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'TravLITE 0.0.1'
-__version__ = '0.0.1'
+__app__ = 'TravLITE 0.0.2'
+__version__ = '0.0.2'
 
 
 def app():

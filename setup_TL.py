@@ -39,7 +39,7 @@ setup(
     # The first three parameters are not required, if at least a
     # 'version' is given, then a versioninfo resource is built from
     # them and added to the executables.
-    version = '1.0.0',
+    version = '0.0.2',
     description = 'LITE Traveller CharGen',
     name = 'TravLITE',
     options = opts,
