@@ -100,7 +100,7 @@ def app():
         '''
         skill = {}
         add_background_skills(skill)
-        print skill
+        print 'Background Skills:', skill
         terms = roll('2d6-2')
         if terms == 0:
         
@@ -218,7 +218,8 @@ def app():
                               ['Battle Suit Training', 'Explosives', 'Heavy Weapons', 'Reconnaissance', 'Remote Operating', 'Sensor Reading', 'Survival Training',
                                'Tactics', 'Athletic Strength', 'Jumping', 'Mole Trucking', 'Roto Flying', 'Energy Rifle', 'Heavy Launchers', 'Portable Artillery',
                                'Robotics', 'Military Tactics', 'Motorboat Helm']],
-               'Merchants'  : ['INT', 3, ['Crewman', 'Senior Crewman', '4th Officer', '3rd Officer', '2nd Officer', '1st Officer', 'Captain'], ['Jack of all Trades', 'Biff']],
+               'Merchants'  : ['INT', 3, ['Crewman', 'Senior Crewman', '4th Officer', '3rd Officer', '2nd Officer', '1st Officer', 'Captain'], ['Administrating', 'Trading',
+                               'Carousing', 'Deceiving', 'Language', 'Persuading', 'Piloting', 'Companion', 'Streetwise', 'Economics', 'Political Science']],
                'Navy'       : ['SOC', 6, ['Crewman', 'Able Spacehand', 'Petty Officer 3rd Class', 'Petty Officer 2nd Class', 'Petty Officer 1st Class', 'Chief Petty Officer', 'Master Chief'], ['Jack of all Trades', 'Biff']],
                'Nobility'   : ['SOC', 7, ['Wastrel', 'Wastrel', 'Ingrate', 'Ingrate', 'Black Sheep', 'Black Sheep', 'Scoundrel'], ['Jack of all Trades', 'Biff']],
                'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain'], ['Jack of all Trades', 'Biff']],
