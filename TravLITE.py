@@ -219,7 +219,13 @@ def app():
                                 'Diplomacy', 'Autocar Driving', 'Roto Flying', 'Athletics', 'Gambling', 'Language', 'Persuading', 'Companion', 'Streetwise', 'Animal Riding', 'Acting', 'Dancing',
                                 'Musical Training', 'Sculpting', 'Slug Pistol', 'Knife Fighting', 'Sword Fighting', 'Small Craft Piloting', 'Archeology', 'Economics', 'History', 'Political Science',
                                 'Cruise Ship Helm', 'Bionetics', 'Philosophy']],
-               'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain'], ['Jack of all Trades', 'Biff']],
+               'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain'], ['Athletics', 'Art', 'Astrogating', 'Battle Suit Training', 'Trading',
+                                'Carousing', 'Telecomm', 'Computer Training', 'Deceiving', 'Diplomacy', 'Driving', 'Explosives', 'Flying', 'Gambling', 'Gun Fighting', 'Jack of all Trades', 'Language',
+                                'Leadership', 'Mechanical Training', 'Medical Training', 'Melee', 'Navigating', 'Persuading', 'Piloting', 'Reconnaissance', 'Remote Operating', 'Seafaring', 'Sensor Reading',
+                                'Social Sciences', 'Stealth', 'Companion', 'Streetwise', 'Tactics', 'Vacc Suit Training', 'Animal Riding', 'Athletic Co-ord', 'Jumping', 'Dancing', 'Holography',
+                                'Autocar Driving', 'Jumpspace', 'Electronics', 'Grav Flying', 'Slug Rifle', 'Slug Pistol', 'Shotgun', 'Fist Fighting', 'Knife Fighting', 'Sword Fighting', 'Anglic Language',
+                                'Vilani Language', 'Zdetl Language', 'Small Craft Piloting', 'Spacecraft Piloting', 'Cybernetics', 'Archeology', 'Economics', 'Linguistics', 'Psychology', 'Political Science',
+                                'Robotics']],
                'Scholar'    : ['EDU', 3, ['', '', '', '', '', '', ''], ['Jack of all Trades', 'Biff']],
                'Scout'      : ['END', 3, ['Trainee', 'Scout', 'Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout'], ['Jack of all Trades', 'Biff']]
               }
