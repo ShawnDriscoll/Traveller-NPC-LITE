@@ -9,7 +9,7 @@
 #
 #
 # The Traveller game in all forms is owned by Far Future Enterprises.
-# Copyright 1977 - 2020 Far Future Enterprises.
+# Copyright 1977 - 2021 Far Future Enterprises.
 # Traveller is a registered trademark of Far Future Enterprises.
 #
 
@@ -184,7 +184,9 @@ def app():
                      'Philosophy', 'Psychology', 'Political Science', 'Planetology', 'Robotics', 'Xenology', 'Sailboat Helm', 'Submarine Helm', 'Cruise Ship Helm', 'Motorboat Helm',
                      'Military Tactics', 'Naval Tactics', 'Bionetics', 'Civil Construction', 'Space Construction', 'Hydroponics', 'Polymers', 'Belter']
     
-    grinder = {'Agent'      : ['INT', 3, ['Rookie', 'Agent', 'Field Agent', 'Field Agent', 'Special Agent', 'Assistant Director', 'Director'],
+    grinder = {
+    
+               'Agent'      : ['INT', 3, ['Rookie', 'Agent', 'Field Agent', 'Field Agent', 'Special Agent', 'Assistant Director', 'Director'],
                               ['Administrating', 'Carousing', 'Telecomm', 'Computer Training', 'Deceiving', 'Investigating', 'Language',
                                'Streetwise', 'Slug Pistol', 'Energy Pistol', 'Vilani Language', 'Zdetl Language', 'Small Craft Piloting',
                                'Political Science', 'Stealth', 'Reconnaissance']],
@@ -207,27 +209,32 @@ def app():
                               ['Battle Suit Training', 'Explosives', 'Heavy Weapons', 'Reconnaissance', 'Remote Operating', 'Sensor Reading', 'Survival Training',
                                'Tactics', 'Athletic Strength', 'Jumping', 'Mole Trucking', 'Roto Flying', 'Energy Rifle', 'Heavy Launchers', 'Field Artillery',
                                'Robotics', 'Military Tactics', 'Motorboat Helm', 'Navigating']],
-               'Merchants'  : ['INT', 3, ['Crewman', 'Senior Crewman', '4th Officer', '3rd Officer', '2nd Officer', '1st Officer', 'Captain'], ['Administrating', 'Trading',
-                               'Carousing', 'Deceiving', 'Language', 'Persuading', 'Piloting', 'Companion', 'Streetwise', 'Economics', 'Political Science']],
-               'Navy'       : ['SOC', 6, ['Crewman', 'Able Spacehand', 'Petty Officer 3rd Class', 'Petty Officer 2nd Class', 'Petty Officer 1st Class', 'Chief Petty Officer',
-                                'Master Chief'], ['Administrating', 'Athletic Co-ord', 'Astrogating', 'Carousing', 'Telecomm', 'Computer Training', 'Diplomacy', 'Engineering',
-                                'Flying', 'Gunnery', 'Language', 'Leadership', 'Medical Training', 'Melee', 'Piloting', 'Seafaring', 'Sensor Reading', 'Stealth', 'Tactics', 'Vacc Suit Training',
-                                'Zero-G Training', 'Gravitics', 'Jumpspace', 'Electronics', 'Life Support', 'Energy', 'Grav Flying', 'Turret Gunnery', 'Ortillery Gunnery', 'Ship Screens',
-                                'Capital Weapons', 'Anglic Language', 'Vilani Language', 'Fist Fighting', 'Sword Fighting', 'Spacecraft Piloting', 'Capital Ship Helm', 'Sailboat Helm',
-                                'Submarine Helm', 'Naval Tactics']],
-               'Nobility'   : ['SOC', 7, ['Wastrel', 'Wastrel', 'Ingrate', 'Ingrate', 'Black Sheep', 'Black Sheep', 'Scoundrel'], ['Administrating', 'Advocating', 'Art', 'Carousing', 'Deceiving',
-                                'Diplomacy', 'Autocar Driving', 'Roto Flying', 'Athletics', 'Gambling', 'Language', 'Persuading', 'Companion', 'Streetwise', 'Animal Riding', 'Acting', 'Dancing',
-                                'Musical Training', 'Sculpting', 'Slug Pistol', 'Knife Fighting', 'Sword Fighting', 'Small Craft Piloting', 'Archeology', 'Economics', 'History', 'Political Science',
-                                'Cruise Ship Helm', 'Bionetics', 'Philosophy']],
-               'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain'], ['Athletics', 'Art', 'Astrogating', 'Battle Suit Training', 'Trading',
-                                'Carousing', 'Telecomm', 'Computer Training', 'Deceiving', 'Diplomacy', 'Driving', 'Explosives', 'Flying', 'Gambling', 'Gun Fighting', 'Jack of all Trades', 'Language',
-                                'Leadership', 'Mechanical Training', 'Medical Training', 'Melee', 'Navigating', 'Persuading', 'Piloting', 'Reconnaissance', 'Remote Operating', 'Seafaring', 'Sensor Reading',
-                                'Social Sciences', 'Stealth', 'Companion', 'Streetwise', 'Tactics', 'Vacc Suit Training', 'Animal Riding', 'Athletic Co-ord', 'Jumping', 'Dancing', 'Holography',
-                                'Autocar Driving', 'Jumpspace', 'Electronics', 'Grav Flying', 'Slug Rifle', 'Slug Pistol', 'Shotgun', 'Fist Fighting', 'Knife Fighting', 'Sword Fighting', 'Anglic Language',
-                                'Vilani Language', 'Zdetl Language', 'Small Craft Piloting', 'Spacecraft Piloting', 'Cybernetics', 'Archeology', 'Economics', 'Linguistics', 'Psychology', 'Political Science',
-                                'Robotics']],
-               'Scholar'    : ['EDU', 3, ['', '', '', '', '', '', ''], ['Jack of all Trades', 'Biff']],
-               'Scout'      : ['END', 3, ['Trainee', 'Scout', 'Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout'], ['Jack of all Trades', 'Biff']]
+               'Merchants'  : ['INT', 3, ['Crewman', 'Senior Crewman', '4th Officer', '3rd Officer', '2nd Officer', '1st Officer', 'Captain'],
+                              ['Administrating', 'Trading', 'Carousing', 'Deceiving', 'Language', 'Persuading', 'Piloting', 'Companion', 'Streetwise', 'Economics', 'Political Science']],
+               'Navy'       : ['SOC', 6, ['Crewman', 'Able Spacehand', 'Petty Officer 3rd Class', 'Petty Officer 2nd Class', 'Petty Officer 1st Class', 'Chief Petty Officer', 'Master Chief'],
+                              ['Administrating', 'Athletic Co-ord', 'Astrogating', 'Carousing', 'Telecomm', 'Computer Training', 'Diplomacy', 'Engineering',
+                               'Flying', 'Gunnery', 'Language', 'Leadership', 'Medical Training', 'Melee', 'Piloting', 'Seafaring', 'Sensor Reading', 'Stealth', 'Tactics', 'Vacc Suit Training',
+                               'Zero-G Training', 'Gravitics', 'Jumpspace', 'Electronics', 'Life Support', 'Energy', 'Grav Flying', 'Turret Gunnery', 'Ortillery Gunnery', 'Ship Screens',
+                               'Capital Weapons', 'Anglic Language', 'Vilani Language', 'Fist Fighting', 'Sword Fighting', 'Spacecraft Piloting', 'Capital Ship Helm', 'Sailboat Helm',
+                               'Submarine Helm', 'Naval Tactics']],
+               'Nobility'   : ['SOC', 7, ['Wastrel', 'Wastrel', 'Ingrate', 'Ingrate', 'Black Sheep', 'Black Sheep', 'Scoundrel'],
+                              ['Administrating', 'Advocating', 'Art', 'Carousing', 'Deceiving', 'Diplomacy', 'Autocar Driving', 'Roto Flying', 'Athletics', 'Gambling', 'Language', 'Persuading',
+                               'Companion', 'Streetwise', 'Animal Riding', 'Acting', 'Dancing', 'Musical Training', 'Sculpting', 'Slug Pistol', 'Knife Fighting', 'Sword Fighting', 'Small Craft Piloting',
+                               'Archeology', 'Economics', 'History', 'Political Science', 'Cruise Ship Helm', 'Bionetics', 'Philosophy']],
+               'Rogue'      : ['DEX', 4, ['Lackey', 'Henchman', 'Corporal', 'Sergeant', 'Lieutenant', 'Leader', 'Captain'],
+                              ['Athletics', 'Art', 'Astrogating', 'Battle Suit Training', 'Trading', 'Carousing', 'Telecomm', 'Computer Training', 'Deceiving', 'Diplomacy', 'Driving', 'Explosives',
+                               'Flying', 'Gambling', 'Gun Fighting', 'Jack of all Trades', 'Language', 'Leadership', 'Mechanical Training', 'Medical Training', 'Melee', 'Navigating', 'Persuading',
+                               'Piloting', 'Reconnaissance', 'Remote Operating', 'Seafaring', 'Sensor Reading', 'Social Sciences', 'Stealth', 'Companion', 'Streetwise', 'Tactics', 'Vacc Suit Training',
+                               'Animal Riding', 'Athletic Co-ord', 'Jumping', 'Dancing', 'Holography', 'Autocar Driving', 'Jumpspace', 'Electronics', 'Grav Flying', 'Slug Rifle', 'Slug Pistol',
+                               'Shotgun', 'Fist Fighting', 'Knife Fighting', 'Sword Fighting', 'Anglic Language', 'Vilani Language', 'Zdetl Language', 'Small Craft Piloting', 'Spacecraft Piloting',
+                               'Cybernetics', 'Archeology', 'Economics', 'Linguistics', 'Psychology', 'Political Science', 'Robotics']],
+               'Scholar'    : ['EDU', 3, ['', '', '', '', '', '', ''],
+                              ['Astrogating', 'Computer Training', 'Engineering', 'Language', 'Life Sciences', 'Medical Training', 'Physical Sciences', 'Social Sciences', 'Space Sciences', 'Veterinary',
+                               'Holography', 'Writing', 'Gavitics', 'Jumpspace', 'Electronics', 'Life Support', 'Energy', 'Anglic Language', 'Vilani Language', 'Zdetl Language', 'Oynprith Language',
+                               'Small Craft Piloting', 'Physics', 'Chemisty', 'Computer Science', 'Biology', 'Cybernetics', 'Genetics', 'Psionicology', 'Archeology', 'Economics', 'History', 'Linguistics',
+                               'Philosophy', 'Psychology', 'Political Science', 'Planetology', 'Robotics', 'Xenology', 'Bionetics', 'Hydroponics']],
+               'Scout'      : ['END', 3, ['Trainee', 'Scout', 'Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout'],
+                              ['Jack of all Trades', 'Biff']]
               }
     
     social_standing_male = ['NOT USED','NOT USED','NOT USED','NOT USED','NOT USED','NOT USED',

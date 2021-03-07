@@ -8,7 +8,7 @@ This **LITE CharGen for Traveller** is a Classic Python 2.5 program for generati
 
 
 The Traveller game in all forms is owned by Far Future Enterprises.
-Copyright 1977 - 2020 Far Future Enterprises.
+Copyright 1977 - 2021 Far Future Enterprises.
 Traveller is a registered trademark of Far Future Enterprises.
 
 
