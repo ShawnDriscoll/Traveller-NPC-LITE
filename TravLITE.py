@@ -5,7 +5,9 @@
 # This LITE CharGen for Traveller is a Classic Python 2.5 program for generating
 # NPCs for Traveller. Skill generation is now being tested with this release.
 #
-# bottle will be needed in the future at some point for this code.
+# bottle testing has begun with the release of 0.1.0.
+# Run this code at the CMD prompt while pointing your web browser
+# to http://localhost:8080/generate
 #
 #
 # The Traveller game in all forms is owned by Far Future Enterprises.
@@ -17,11 +19,12 @@ from rpg_tools.diceroll import roll
 import os
 import logging
 from random import randint
+from bottle import route, run, template, get, post, request
 
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'TravLITE 0.0.2'
-__version__ = '0.0.2'
+__app__ = 'TravLITE 0.1.0'
+__version__ = '0.1.0'
 
 
 def app():
@@ -270,8 +273,8 @@ def app():
     
     male = 'Male'
     female = 'Female'
-    random_sex = True
-    sex_chosen = 'Random'
+    #random_sex = True
+    #sex_chosen = 'Random'
     sex = ''
     
     # Characteristic Names
@@ -347,101 +350,139 @@ def app():
         for j in range(fc_freq[i]):
             fc_sounds.append(fc_sound[i])
     
-    # Generate 10 NPCs
-    
-    for i in range(10):
-    
-        # What are the six characteristics for this NPC?
-        
-        characteristic = {}
-        
-        #
-        # Create a dictionary for the NPC's characteristics.
-        # I could have used a list instead of a dict, but I
-        # wanted to learn how to do dict for a change.
-        #
-        
-        for key in characteristic_name:
-        
-            characteristic[key] = roll('2d6') # normal two 6-sided roll
-            #characteristic[key] = roll('boon') # Method I roll
-            #characteristic[key] = roll('1d6+6') # Nexus roll
-        
-        # Generate NPC's name
-        
-        sex = ''
-        while sex <> sex_chosen:
-            first_name = gen_word(11)
-            last_name = gen_word(11)
-            middle_name = gen_word(11)
-            homeworld_name = gen_word(14)
-
-            if len(first_name) > len(last_name):
-                temp = first_name
-                first_name = last_name
-                last_name = temp
-
-            if first_name[len(first_name) - 1] == 'a' \
-                   or first_name[len(first_name) - 3:len(first_name)] == 'nny' \
-                   or first_name[len(first_name) - 2:len(first_name)] == 'ne' \
-                   or first_name[len(first_name) - 2:len(first_name)] == 'se' \
-                   or first_name[len(first_name) - 2:len(first_name)] == 'ie' \
-                   or first_name[len(first_name) - 1] == 'i' \
-                   or first_name[len(first_name) - 3:len(first_name)] == 'del' \
-                   or first_name[len(first_name) - 2:len(first_name)] == 'ly' \
-                   or first_name[len(first_name) - 2:len(first_name)] == 'll' \
-                   or first_name[len(first_name) - 4:len(first_name)] == 'lynn' \
-                   or first_name[len(first_name) - 2:len(first_name)] == 'le' \
-                   or first_name[len(first_name) - 3:len(first_name)] == 'ndy' \
-                   or first_name[0:2] == 'Gw' \
-                   or first_name[0:2] == 'Qu':
-                sex = female
-            else:
-                sex = male
-            if random_sex:
-                sex_chosen = sex
-        
-        age = 18 + roll('1D4') - roll('1D4')
-        vp_soc = characteristic['SOC']
-        print '[' + hex_code[characteristic['STR']] + \
-                    hex_code[characteristic['DEX']] + \
-                    hex_code[characteristic['END']] + \
-                    hex_code[characteristic['INT']] + \
-                    hex_code[characteristic['EDU']] + \
-                    noble_hex_code[characteristic['SOC']] + ']', age, social_class[vp_soc]
-                                                        
-        terms, age, name_title, job, skill = grind(characteristic, age)
-
-        if characteristic['SOC'] > 10:
-            if sex == male:
-                if characteristic['SOC'] > 11:
-                    full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
-                else:
-                    full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
-            else:
-                if characteristic['SOC'] > 11:
-                    full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
-                else:
-                    full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+    def check_number(num_npcs):
+        if num_npcs > 0 and num_npcs < 11:
+            return True
         else:
-            if name_title == '':
-                #if skill_level[27] == 3:
-                if characteristic['INT'] == 11:
-                    full_name = 'Dr. ' + first_name + ' ' + last_name
-                #elif characteristic['EDU'] > 11 or skill_level[27] > 3:
-                elif characteristic['EDU'] > 11 or characteristic['INT'] > 11:
-                    full_name = 'Dr. ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
-                else:
-                    full_name = first_name + ' ' + last_name
+            return False
+
+    @get('/generate')
+    def input_number():
+        return '''
+            <h1>TravLite 0.1.0</h1>
+            <form action="/generate" method="post">
+                <br>
+                Sex: <input name="sex_chosen" type="text" /><br><br>
+                How many NPCs (1 - 10): <input name="no_of_npcs" type="text" /><br><br>
+                <input value="Generate" type="submit" />
+            </form>
+        '''
+    
+    @post('/generate') # or @route('/generate', method='POST')
+    def do_generation():
+        sex_chosen = request.forms.get('sex_chosen')
+        no_of_npcs = int(request.forms.get('no_of_npcs'))
+        
+        if check_number(no_of_npcs):
+            if sex_chosen == 'Random':
+                random_sex = True
             else:
-                full_name = name_title + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                random_sex = False
+   
+    
+            # NPC generation loop
+            
+            for i in range(no_of_npcs):
+            
+                # What are the six characteristics for this NPC?
                 
-        print full_name, '[' + hex_code[characteristic['STR']] + \
-                               hex_code[characteristic['DEX']] + \
-                               hex_code[characteristic['END']] + \
-                               hex_code[characteristic['INT']] + \
-                               hex_code[characteristic['EDU']] + \
-                               noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, job, terms)
+                characteristic = {}
+                
+                #
+                # Create a dictionary for the NPC's characteristics.
+                # I could have used a list instead of a dict, but I
+                # wanted to learn how to do dict for a change.
+                #
+                
+                for key in characteristic_name:
+                
+                    characteristic[key] = roll('2d6') # normal two 6-sided roll
+                    #characteristic[key] = roll('boon') # Method I roll
+                    #characteristic[key] = roll('1d6+6') # Nexus roll
+                
+                # Generate NPC's name
+                
+                sex = ''
+                #sex_chosen = 'Random'
+                while sex <> sex_chosen:
+                    first_name = gen_word(11)
+                    last_name = gen_word(11)
+                    middle_name = gen_word(11)
+                    homeworld_name = gen_word(14)
+
+                    if len(first_name) > len(last_name):
+                        temp = first_name
+                        first_name = last_name
+                        last_name = temp
+
+                    if first_name[len(first_name) - 1] == 'a' \
+                           or first_name[len(first_name) - 3:len(first_name)] == 'nny' \
+                           or first_name[len(first_name) - 2:len(first_name)] == 'ne' \
+                           or first_name[len(first_name) - 2:len(first_name)] == 'se' \
+                           or first_name[len(first_name) - 2:len(first_name)] == 'ie' \
+                           or first_name[len(first_name) - 1] == 'i' \
+                           or first_name[len(first_name) - 3:len(first_name)] == 'del' \
+                           or first_name[len(first_name) - 2:len(first_name)] == 'ly' \
+                           or first_name[len(first_name) - 2:len(first_name)] == 'll' \
+                           or first_name[len(first_name) - 4:len(first_name)] == 'lynn' \
+                           or first_name[len(first_name) - 2:len(first_name)] == 'le' \
+                           or first_name[len(first_name) - 3:len(first_name)] == 'ndy' \
+                           or first_name[0:2] == 'Gw' \
+                           or first_name[0:2] == 'Qu':
+                        sex = female
+                    else:
+                        sex = male
+                    if random_sex:
+                        sex_chosen = sex
+                
+                age = 18 + roll('1D4') - roll('1D4')
+                vp_soc = characteristic['SOC']
+                print '[' + hex_code[characteristic['STR']] + \
+                            hex_code[characteristic['DEX']] + \
+                            hex_code[characteristic['END']] + \
+                            hex_code[characteristic['INT']] + \
+                            hex_code[characteristic['EDU']] + \
+                            noble_hex_code[characteristic['SOC']] + ']', age, social_class[vp_soc]
+                                                                
+                terms, age, name_title, job, skill = grind(characteristic, age)
+
+                if characteristic['SOC'] > 10:
+                    if sex == male:
+                        if characteristic['SOC'] > 11:
+                            full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
+                        else:
+                            full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                    else:
+                        if characteristic['SOC'] > 11:
+                            full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
+                        else:
+                            full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                else:
+                    if name_title == '':
+                        #if skill_level[27] == 3:
+                        if characteristic['INT'] == 11:
+                            full_name = 'Dr. ' + first_name + ' ' + last_name
+                        #elif characteristic['EDU'] > 11 or skill_level[27] > 3:
+                        elif characteristic['EDU'] > 11 or characteristic['INT'] > 11:
+                            full_name = 'Dr. ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                        else:
+                            full_name = first_name + ' ' + last_name
+                    else:
+                        full_name = name_title + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                        
+                print full_name, '[' + hex_code[characteristic['STR']] + \
+                                       hex_code[characteristic['DEX']] + \
+                                       hex_code[characteristic['END']] + \
+                                       hex_code[characteristic['INT']] + \
+                                       hex_code[characteristic['EDU']] + \
+                                       noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, job, terms)
+                                       
+        else:
+            print no_of_npcs
+            return "<p>Login failed.</p>"
+
+    run(host='localhost', port='8080')
+
 #
 # Program exits here!
 #
@@ -467,7 +508,7 @@ if __name__ == '__main__':
     print
     print 'Thank you for giving', __app__, 'a try.'
     vernum, release = roll('info')
-    print 'This program uses', release
+    print 'This program is using', release
     print
     print '----------------------------'
     print __author__

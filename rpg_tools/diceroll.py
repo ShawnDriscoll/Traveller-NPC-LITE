@@ -109,7 +109,7 @@ def roll(dice):
     An invalid roll will return a 0.
     '''
 
-    log = logging.getLogger('TravLITE_0.0.2.diceroll')
+    log = logging.getLogger('TravLITE_0.1.0.diceroll')
 
     # make inputted string argument upper case, and remove spaces
     dice = str(dice).upper().replace(' ','')

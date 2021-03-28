@@ -13,7 +13,7 @@ sys.argv.append('py2exe')
 
 opts = {'py2exe': {'includes': [],
                    'excludes': ['_gtkagg', '_tkagg', '_agg2', 'bsddb', 'curses',
-                                'email', 'pywin.debugger', 'pywin.debugger.dbgcon',
+                                'pywin.debugger', 'pywin.debugger.dbgcon',
                                 'pywin.dialogs', '_cairo', '_cocoaagg', '_fltkagg',
                                 '_gtk', '_gtkcairo', 'tcl', 'Tkconstants', 'Tkinter'],
                    'packages': [],
@@ -39,7 +39,7 @@ setup(
     # The first three parameters are not required, if at least a
     # 'version' is given, then a versioninfo resource is built from
     # them and added to the executables.
-    version = '0.0.2',
+    version = '0.1.0',
     description = 'LITE Traveller CharGen',
     name = 'TravLITE',
     options = opts,
