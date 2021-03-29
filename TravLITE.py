@@ -1,9 +1,9 @@
 #
-# The beginnings of a LITE chargen app for Traveller NPCs.
+# LITE chargen app for Traveller NPCs v0.1.1.
 # https://github.com/ShawnDriscoll/Traveller-NPC-LITE
 #
 # This LITE CharGen for Traveller is a Classic Python 2.5 program for generating
-# NPCs for Traveller. Skill generation is now being tested with this release.
+# NPCs for Traveller.
 #
 # bottle testing has begun with the release of 0.1.0.
 # Run this code at the CMD prompt while pointing your web browser
@@ -23,8 +23,8 @@ from bottle import route, run, template, get, post, request
 
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'TravLITE 0.1.0'
-__version__ = '0.1.0'
+__app__ = 'TravLITE 0.1.1'
+__version__ = '0.1.1'
 
 
 def app():
@@ -91,10 +91,10 @@ def app():
         for i in range(n):
             picked_skill = grinder[job][3][randint(1,temp)-1]
             if picked_skill in skill:
-                print picked_skill, '+1'
+                #print picked_skill, '+1'
                 skill[picked_skill] += 1
             else:
-                print picked_skill, '0'
+                #print picked_skill, '0'
                 skill[picked_skill] = 0
     
     def grind(characteristic, age):
@@ -103,7 +103,7 @@ def app():
         '''
         skill = {}
         add_background_skills(skill)
-        print 'Background Skills:', skill
+        #print 'Background Skills:', skill
         terms = roll('2d6-2')
         if terms == 0:
         
@@ -146,7 +146,7 @@ def app():
                         add_skill(job, skill, 1)
             else:
                 add_skill(job, skill, 1)
-        print skill
+        #print skill
             
         return terms, age, name_title, job, skill
         
@@ -350,136 +350,213 @@ def app():
         for j in range(fc_freq[i]):
             fc_sounds.append(fc_sound[i])
     
-    def check_number(num_npcs):
-        if num_npcs > 0 and num_npcs < 11:
+    def check_number(num_npcs, fnum, snum):
+        if num_npcs >= fnum and num_npcs <= snum:
             return True
         else:
             return False
 
     @get('/generate')
-    def input_number():
+    def input_sex_and_number():
         return '''
-            <h1>TravLite 0.1.0</h1>
+            <br><br>
+            <h1>TravLite 0.1.1</h1>
             <form action="/generate" method="post">
                 <br>
-                Sex: <input name="sex_chosen" type="text" /><br><br>
-                How many NPCs (1 - 10): <input name="no_of_npcs" type="text" /><br><br>
-                <input value="Generate" type="submit" />
+                <label for="sex_chosen">Sex (Male, Female, Random):</label><br>
+                <input type="text" name="sex_chosen" value="Random"><br><br>
+                <label for="no_of_npcs">How many NPCs (1 - 20):</label><br>
+                <input type="text" name="no_of_npcs" value="10"><br><br>
+                <label for="roll_type">Characteristic Roll (2d6, Boon, 1d6+6, etc):</label><br>
+                <input type="text" name="roll_type" value="2d6"><br><br>
+                <input value="Generate" type="submit">
             </form>
         '''
     
     @post('/generate') # or @route('/generate', method='POST')
     def do_generation():
         sex_chosen = request.forms.get('sex_chosen')
-        no_of_npcs = int(request.forms.get('no_of_npcs'))
-        
-        if check_number(no_of_npcs):
+        no_of_npcs = request.forms.get('no_of_npcs')
+        roll_type = request.forms.get('roll_type')
+
+        if sex_chosen == '':
+            sex_chosen = 'Random'
+        if no_of_npcs == '':
+            no_of_npcs = 1
+        else:
+            no_of_npcs = int(no_of_npcs)
+
+        if check_number(no_of_npcs, 1, 20):
             if sex_chosen == 'Random':
                 random_sex = True
             else:
                 random_sex = False
-   
-    
-            # NPC generation loop
-            
-            for i in range(no_of_npcs):
-            
-                # What are the six characteristics for this NPC?
+        
+            if sex_chosen in ['Random', 'Male', 'Female']:
+               
+                # Start with a blank slate
                 
-                characteristic = {}
+                npc_list = '<br>'
                 
-                #
-                # Create a dictionary for the NPC's characteristics.
-                # I could have used a list instead of a dict, but I
-                # wanted to learn how to do dict for a change.
-                #
+                # NPC generation loop
                 
-                for key in characteristic_name:
-                
-                    characteristic[key] = roll('2d6') # normal two 6-sided roll
-                    #characteristic[key] = roll('boon') # Method I roll
-                    #characteristic[key] = roll('1d6+6') # Nexus roll
-                
-                # Generate NPC's name
-                
-                sex = ''
-                #sex_chosen = 'Random'
-                while sex <> sex_chosen:
-                    first_name = gen_word(11)
-                    last_name = gen_word(11)
-                    middle_name = gen_word(11)
-                    homeworld_name = gen_word(14)
-
-                    if len(first_name) > len(last_name):
-                        temp = first_name
-                        first_name = last_name
-                        last_name = temp
-
-                    if first_name[len(first_name) - 1] == 'a' \
-                           or first_name[len(first_name) - 3:len(first_name)] == 'nny' \
-                           or first_name[len(first_name) - 2:len(first_name)] == 'ne' \
-                           or first_name[len(first_name) - 2:len(first_name)] == 'se' \
-                           or first_name[len(first_name) - 2:len(first_name)] == 'ie' \
-                           or first_name[len(first_name) - 1] == 'i' \
-                           or first_name[len(first_name) - 3:len(first_name)] == 'del' \
-                           or first_name[len(first_name) - 2:len(first_name)] == 'ly' \
-                           or first_name[len(first_name) - 2:len(first_name)] == 'll' \
-                           or first_name[len(first_name) - 4:len(first_name)] == 'lynn' \
-                           or first_name[len(first_name) - 2:len(first_name)] == 'le' \
-                           or first_name[len(first_name) - 3:len(first_name)] == 'ndy' \
-                           or first_name[0:2] == 'Gw' \
-                           or first_name[0:2] == 'Qu':
-                        sex = female
-                    else:
-                        sex = male
-                    if random_sex:
-                        sex_chosen = sex
-                
-                age = 18 + roll('1D4') - roll('1D4')
-                vp_soc = characteristic['SOC']
-                print '[' + hex_code[characteristic['STR']] + \
-                            hex_code[characteristic['DEX']] + \
-                            hex_code[characteristic['END']] + \
-                            hex_code[characteristic['INT']] + \
-                            hex_code[characteristic['EDU']] + \
-                            noble_hex_code[characteristic['SOC']] + ']', age, social_class[vp_soc]
-                                                                
-                terms, age, name_title, job, skill = grind(characteristic, age)
-
-                if characteristic['SOC'] > 10:
-                    if sex == male:
-                        if characteristic['SOC'] > 11:
-                            full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
-                        else:
-                            full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
-                    else:
-                        if characteristic['SOC'] > 11:
-                            full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
-                        else:
-                            full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
-                else:
-                    if name_title == '':
-                        #if skill_level[27] == 3:
-                        if characteristic['INT'] == 11:
-                            full_name = 'Dr. ' + first_name + ' ' + last_name
-                        #elif characteristic['EDU'] > 11 or skill_level[27] > 3:
-                        elif characteristic['EDU'] > 11 or characteristic['INT'] > 11:
-                            full_name = 'Dr. ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
-                        else:
-                            full_name = first_name + ' ' + last_name
-                    else:
-                        full_name = name_title + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                for i in range(no_of_npcs):
+                    
+                    # What are the six characteristics for this NPC?
+                    
+                    characteristic = {}
+                    
+                    #
+                    # Create a dictionary for the NPC's characteristics.
+                    # I could have used a list instead of a dict, but I
+                    # wanted to learn how to do dict for a change.
+                    #
+                    
+                    for key in characteristic_name:
                         
-                print full_name, '[' + hex_code[characteristic['STR']] + \
-                                       hex_code[characteristic['DEX']] + \
-                                       hex_code[characteristic['END']] + \
-                                       hex_code[characteristic['INT']] + \
-                                       hex_code[characteristic['EDU']] + \
-                                       noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, job, terms)
+                        characteristic[key] = roll(roll_type) # entered in web browser
+                        #characteristic[key] = roll('2d6') # normal two 6-sided roll
+                        #characteristic[key] = roll('boon') # Method I roll
+                        #characteristic[key] = roll('1d6+6') # Nexus roll
+                    
+                    # Generate NPC's name
+
+                    sex = ''
+                    #sex_chosen = 'Random'
+                    while sex <> sex_chosen:
+                        first_name = gen_word(11)
+                        last_name = gen_word(11)
+                        middle_name = gen_word(11)
+                        homeworld_name = gen_word(14)
+
+                        if len(first_name) > len(last_name):
+                            temp = first_name
+                            first_name = last_name
+                            last_name = temp
+
+                        if first_name[len(first_name) - 1] == 'a' \
+                               or first_name[len(first_name) - 3:len(first_name)] == 'nny' \
+                               or first_name[len(first_name) - 2:len(first_name)] == 'ne' \
+                               or first_name[len(first_name) - 2:len(first_name)] == 'se' \
+                               or first_name[len(first_name) - 2:len(first_name)] == 'ie' \
+                               or first_name[len(first_name) - 1] == 'i' \
+                               or first_name[len(first_name) - 3:len(first_name)] == 'del' \
+                               or first_name[len(first_name) - 2:len(first_name)] == 'ly' \
+                               or first_name[len(first_name) - 2:len(first_name)] == 'll' \
+                               or first_name[len(first_name) - 4:len(first_name)] == 'lynn' \
+                               or first_name[len(first_name) - 2:len(first_name)] == 'le' \
+                               or first_name[len(first_name) - 3:len(first_name)] == 'ndy' \
+                               or first_name[0:2] == 'Gw' \
+                               or first_name[0:2] == 'Qu':
+                            sex = female
+                        else:
+                            sex = male
+                        if random_sex:
+                            sex_chosen = sex
+                    
+                    age = 18 + roll('1D4') - roll('1D4')
+                    vp_soc = characteristic['SOC']
+                    # print '[' + hex_code[characteristic['STR']] + \
+                                # hex_code[characteristic['DEX']] + \
+                                # hex_code[characteristic['END']] + \
+                                # hex_code[characteristic['INT']] + \
+                                # hex_code[characteristic['EDU']] + \
+                                # noble_hex_code[characteristic['SOC']] + ']', age, social_class[vp_soc]
+                                                                    
+                    terms, age, name_title, job, skill = grind(characteristic, age)
+
+                    if characteristic['SOC'] > 10:
+                        if sex == male:
+                            if characteristic['SOC'] > 11:
+                                full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
+                            else:
+                                full_name = social_standing_male[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                        else:
+                            if characteristic['SOC'] > 11:
+                                full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + middle_name + ' ' + last_name + ' of ' + homeworld_name
+                            else:
+                                full_name = social_standing_female[characteristic['SOC']] + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                    else:
+                        if name_title == '':
+                            #if skill_level[27] == 3:
+                            if characteristic['INT'] == 11:
+                                full_name = 'Dr. ' + first_name + ' ' + last_name
+                            #elif characteristic['EDU'] > 11 or skill_level[27] > 3:
+                            elif characteristic['EDU'] > 11 or characteristic['INT'] > 11:
+                                full_name = 'Dr. ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                            else:
+                                full_name = first_name + ' ' + last_name
+                        else:
+                            full_name = name_title + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
+                            
+                    # print full_name, '[' + hex_code[characteristic['STR']] + \
+                                           # hex_code[characteristic['DEX']] + \
+                                           # hex_code[characteristic['END']] + \
+                                           # hex_code[characteristic['INT']] + \
+                                           # hex_code[characteristic['EDU']] + \
+                                           # noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, job, terms)
+                    
+                    npc_list += full_name + ' [' + hex_code[characteristic['STR']] + \
+                                                   hex_code[characteristic['DEX']] + \
+                                                   hex_code[characteristic['END']] + \
+                                                   hex_code[characteristic['INT']] + \
+                                                   hex_code[characteristic['EDU']] + \
+                                                   noble_hex_code[characteristic['SOC']] + ']<br>%s, age %d, %s class, %d-term %s<br>' % (sex, age, social_class[vp_soc], terms, job)
+                                                   
+                    # Sort skill list
+                    skill_item = []
+                    skill_amount = []
+                    for i in range(80):
+                        skill_item.append(-1)
+                        skill_amount.append(-1)
+                        
+                    key_count = 0
+                    print skill
+                    print
+                    for key in skill:
+                        #print key, skill[key]
+                        skill_item[key_count] = key
+                        skill_amount[key_count] = skill[key]
+                        key_count += 1
+                    
+                    # for i in range(key_count):
+                        # print skill_item[i], skill_amount[i]
+                    # print
+                    
+                    key_count -= 1
+                    swapping = True
+                    while swapping:
+                        swapping = False
+                        for i in range(key_count):
+                            if skill_item[i] > skill_item[i + 1]:
+                                temp = skill_item[i]
+                                skill_item[i] = skill_item[i + 1]
+                                skill_item[i + 1] = temp
+                                temp = skill_amount[i]
+                                skill_amount[i] = skill_amount[i + 1]
+                                skill_amount[i + 1] = temp
+                                swapping = True
+                    
+                    key_count += 1
+                    skill_count = 0
+                    for i in range(key_count):
+                        #print skill_item[i], skill_amount[i]
+                        npc_list += '%s %d, ' % (skill_item[i], skill_amount[i])
+                        skill_count += 1
+                        if skill_count == 6 and i <> key_count - 1:
+                            npc_list += '<br>'
+                            skill_count = 0
+                    npc_list = npc_list[0:len(npc_list) - 2] + '<br><br><br>'
+                    #print
+                                           
+                #return "<p>It worked!</p>"
+                return npc_list
+                
+            else:
+                return "<p><br><br>Enter Sex. Not gender, please.</p>"
                                        
         else:
-            print no_of_npcs
-            return "<p>Login failed.</p>"
+            return "<p><br><br>Enter a value of 1 to 20 NPCs, please.</p>"
 
     run(host='localhost', port='8080')
 

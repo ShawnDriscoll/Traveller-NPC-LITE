@@ -1,4 +1,4 @@
-**LITE CharGen for Traveller 0.1.0**
+**LITE CharGen for Traveller 0.1.1**
 ====================================
 
 .. figure:: images/trav70_dice_post_150x150.png
