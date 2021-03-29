@@ -400,6 +400,10 @@ def app():
                 
                 # NPC generation loop
                 
+                log.info('sex_chosen = ' + sex_chosen)
+                log.info('no_of_npcs = ' + str(no_of_npcs))
+                log.info('roll_type = ' + roll_type)
+                
                 for i in range(no_of_npcs):
                     
                     # What are the six characteristics for this NPC?
@@ -501,7 +505,11 @@ def app():
                                                    hex_code[characteristic['END']] + \
                                                    hex_code[characteristic['INT']] + \
                                                    hex_code[characteristic['EDU']] + \
-                                                   noble_hex_code[characteristic['SOC']] + ']<br>%s, age %d, %s class, %d-term %s<br>' % (sex, age, social_class[vp_soc], terms, job)
+                                                   noble_hex_code[characteristic['SOC']] + ']<br>%s, age %d, %s class' % (sex, age, social_class[vp_soc])
+                                                   
+                    if terms > 0:
+                        npc_list += ', %d-term %s' % (terms, job)
+                    npc_list += '<br>'
                                                    
                     # Sort skill list
                     skill_item = []
@@ -511,8 +519,8 @@ def app():
                         skill_amount.append(-1)
                         
                     key_count = 0
-                    print skill
-                    print
+                    #print skill
+                    #print
                     for key in skill:
                         #print key, skill[key]
                         skill_item[key_count] = key
