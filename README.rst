@@ -27,7 +27,7 @@ or the EPUB from https://readthedocs.org/projects/travliteguide/downloads/epub/l
 Requirements
 ------------
 
-* **Windows XP/7/8/10**
+* **Windows 10**
 
    It might not work in OSX or Linux.
 
@@ -37,12 +37,11 @@ Requirements
    
 * **colorama 0.2.7**
 
-   Because the dice roller may have some colored text messages for debugging. The colorama
-   code in diceroll.py can be removed if it is not needed, however.
+   Because the dice roller may have some colored text messages for debugging.
    
 * **py2exe 0.6.9**
 
-   Used by setup_TL.py for making EXEs of the Python code. Optional.
+   Used by setup_TL.py for making EXEs of the Python code for you. Optional.
 
 Promo
 -----

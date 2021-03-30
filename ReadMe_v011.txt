@@ -8,7 +8,7 @@ If a file is reported missing, such as MSVCP71.dll, copy the file to your C:\Win
 
 
 
-WARNING: This is a very LITE NPC generator based on Mongoose Traveller 2nd Edition. It just generates the NPC's name, characteristics, and skills.
+WARNING: This is a very LITE NPC generator based on Mongoose Traveller 1st and 2nd Editions. It simply generates the NPC's name, characteristics, and skills.
 
 -Shawn
 shawndriscoll@hotmail.com

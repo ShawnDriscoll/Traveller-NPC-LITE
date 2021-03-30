@@ -12,7 +12,7 @@ its `GitHub
 
 **TravLITE** features minor logging and error tracking at this time.
 
-This documentation explains how to install and use the **TravLITE** for Traveller NPC generation.
+This documentation explains how to install and use **TravLITE** for Traveller NPC generation.
 
 .. image:: python_classic_2_5_tag.png
     :target: https://www.python.org/download/releases/2.5.4/
@@ -31,5 +31,5 @@ Future Enterprises.
 .. toctree::
    :maxdepth: 2
 
-   info
+   introduction
    about_the_author
