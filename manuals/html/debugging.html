@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Debugging diceroll &mdash; diceroll 3.1 Operations Manual</title>
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+          URL_ROOT:    '',
+          VERSION:     '3.1.0b',
+          COLLAPSE_MODINDEX: false,
+          FILE_SUFFIX: '.html'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/diceroll_icon_16x16.ico"/>
+    <link rel="contents" title="Global table of contents" href="contents.html" />
+    <link rel="index" title="Global index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="diceroll 3.1 Operations Manual" href="index.html" />
+    <link rel="next" title="Designer's Notes" href="designers_notes.html" />
+    <link rel="prev" title="Using roll() in Your Own Code" href="samples.html" />
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="designers_notes.html" title="Designer's Notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="samples.html" title="Using roll() in Your Own Code"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">diceroll 3.1 Operations Manual</a> &raquo;</li>
+      </ul>
+    </div>
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  
+  <div class="section" id="debugging-diceroll">
+<h1><strong>Debugging diceroll</strong><a class="headerlink" href="#debugging-diceroll" title="Permalink to this headline">¶</a></h1>
+<div class="figure">
+<img alt="_images/fake_die.png" src="_images/fake_die.png" />
+</div>
+<p><strong>diceroll 3.1</strong> keeps a log file of any dice rolls made during its last run. You will find <tt class="docutils literal"><span class="pre">diceroll.log</span></tt> in the <tt class="docutils literal"><span class="pre">Logs</span></tt>
+folder it creates if one isn't there already. In the file you will see mentions of dice being rolled. <strong>diceroll</strong> uses
+a default logging mode of <tt class="docutils literal"><span class="pre">INFO</span></tt> which isn't that verbose.</p>
+<div class="highlight"><pre><span class="n">diceroll_log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+<p>Your INFO logging will output as:</p>
+<blockquote>
+<div class="line-block">
+<div class="line">...INFO diceroll - Logging started.</div>
+<div class="line">...INFO diceroll - roll() v3.1 started, and running...</div>
+<div class="line">...INFO diceroll - 3D4 = 3D4+0 = 10</div>
+</div>
+</blockquote>
+<p>Changing <strong>diceroll's</strong> logging mode to <tt class="docutils literal"><span class="pre">DEBUG</span></tt> will record debugging messages in the <tt class="docutils literal"><span class="pre">Logs\diceroll.log</span></tt> file.</p>
+<div class="highlight"><pre><span class="n">diceroll_log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+</pre></div>
+<p>Your DEBUG logging will output as:</p>
+<blockquote>
+<div class="line-block">
+<div class="line">...INFO diceroll - Logging started.</div>
+<div class="line">...INFO diceroll - roll() v3.1 started, and running...</div>
+<div class="line">...DEBUG diceroll - Asked to roll 3D4:</div>
+<div class="line">...DEBUG diceroll - Using three 4-sided dice...</div>
+<div class="line">...DEBUG diceroll - Rolled a 4</div>
+<div class="line">...DEBUG diceroll - Rolled a 2</div>
+<div class="line">...DEBUG diceroll - Rolled a 2</div>
+<div class="line">...INFO diceroll - 3D4 = 3D4+0 = 8</div>
+</div>
+</blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Running <strong>diceroll</strong> in <tt class="docutils literal"><span class="pre">DEBUG</span></tt> mode may create a log file that will be too huge to open. A program of yours
+left running for a long period of time could create millions of lines of recorded log entries. Fortunately, <tt class="docutils literal"><span class="pre">diceroll.log</span></tt> is
+reset each time your program is run. Also, any errors encountered will be recorded as <tt class="docutils literal"><span class="pre">ERROR</span></tt> in the log file, no
+matter which logging mode you've chosen to use.</p>
+</div>
+<p>If your own code has logging enabled for it, be sure to let <strong>diceroll</strong> know by changing <tt class="docutils literal"><span class="pre">your_code_name_here</span></tt> to
+the name of the program you're calling <tt class="docutils literal"><span class="pre">roll()</span></tt> from.</p>
+<div class="highlight"><pre><span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;your_code_name_here.diceroll&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><img class="logo" src="_static/shonner_trans.png" alt="Logo"/></p>
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="samples.html" title="previous chapter"><strong>Using roll() in Your Own Code</strong></a></p>
+            <h4>Next topic</h4>
+            <p class="topless"><a href="designers_notes.html" title="next chapter"><strong>Designer's Notes</strong></a></p>
+            <h3>Quick search</h3>
+            <form class="search" action="search.html" method="get">
+              <input type="text" name="q" size="18" /> <input type="submit" value="Go" />
+              <input type="hidden" name="check_keywords" value="yes" />
+              <input type="hidden" name="area" value="default" />
+            </form>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="modindex.html" title="Global Module Index"
+             accesskey="M">modules</a> |</li>
+        <li class="right" >
+          <a href="designers_notes.html" title="Designer's Notes"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="samples.html" title="Using roll() in Your Own Code"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">diceroll 3.1 Operations Manual</a> &raquo;</li>
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2020, SHONNER CORP.
+      Last updated on Oct 18, 2020.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a>.
+    </div>
+  </body>
+</html>
