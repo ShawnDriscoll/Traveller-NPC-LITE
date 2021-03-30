@@ -10,15 +10,19 @@
 
 
 
-**LITE CharGen for Traveller 0.1.1**
-====================================
+**TravLITE 0.1.1: CharGen for Traveller**
+=========================================
 
 .. figure:: images/travlite_book_cover_art.png
 
 
-This **LITE CharGen for Traveller** is a Classic Python 2.5 program for generating NPCs for Traveller. Running in a web browser is now being tested with this release.
+This **TravLITE** is a Classic Python 2.5 program for generating NPCs for Traveller. Running in a web browser is now being tested with this release.
 
 Read the **TravLITE Guide** at http://travliteguide.readthedocs.io
+
+Download the PDF from https://readthedocs.org/projects/travliteguide/downloads/pdf/latest
+
+or the EPUB from https://readthedocs.org/projects/travliteguide/downloads/epub/latest
 
 Requirements
 ------------
@@ -49,7 +53,7 @@ Promo
 Warning
 -------
 
-**LITE CharGen for Traveller** will not work with **Python 2.6+**.
+**TravLITE** will not work with **Python 2.6+**.
 
 
 Contact

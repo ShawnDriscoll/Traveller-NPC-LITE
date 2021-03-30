@@ -7,11 +7,12 @@
 
 from distutils.core import setup
 import py2exe
+import glob
 import sys
 
 sys.argv.append('py2exe')
 
-opts = {'py2exe': {'includes': [],
+opts = {'py2exe': {'includes': ['colorama'],
                    'excludes': ['_gtkagg', '_tkagg', '_agg2', 'bsddb', 'curses',
                                 'pywin.debugger', 'pywin.debugger.dbgcon',
                                 'pywin.dialogs', '_cairo', '_cocoaagg', '_fltkagg',
@@ -23,6 +24,8 @@ opts = {'py2exe': {'includes': [],
         }
  
 data_files = [
+                  (r'colorama\demos', glob.glob(r'C:\Python25\Lib\site-packages\colorama\demos\*.*')),
+                  (r'colorama', glob.glob(r'C:\Python25\Lib\site-packages\colorama\*.*')),
                   (r'.', [r'C:\windows\system32\MSVCP71.dll']),
                   (r'.', [r'C:\windows\system32\MSVCR71.dll']),
                   (r'.', [r'C:\Python25\MSVCP90.dll']),
