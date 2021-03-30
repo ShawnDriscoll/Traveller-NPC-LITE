@@ -17,9 +17,6 @@ ehthumbs.db
 # Folder config file
 Desktop.ini
 
-# Mac
-.DS_Store
-
 
 ############
 ## Python
@@ -37,11 +34,6 @@ var/
 sdist/
 develop-eggs/
 .installed.cfg
-
-#########
-## gcc
-#########
-*.exe
 
 
 ############
