@@ -1,0 +1,32 @@
+.. figure:: tarts_cover_pdf_art.png
+
+**Total Annihilation RTS Guide**
+================================
+
+.. toctree::
+   :maxdepth: 2
+
+   info
+   reviews
+   awards
+   forsale
+   patch
+   unitlimit
+   tacomputerai
+   units
+   tabugfix
+   maps
+   mapreviews
+   map_tutorial
+   tools
+   online
+   music
+   movies
+   tips
+   fiction
+   commander_wip
+   ogre
+   original_artwork
+   space_rts
+   ta2wishlist
+   about_the_author
