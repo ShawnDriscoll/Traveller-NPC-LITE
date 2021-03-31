@@ -187,8 +187,7 @@ def app():
                      'Philosophy', 'Psychology', 'Political Science', 'Planetology', 'Robotics', 'Xenology', 'Sailboat Helm', 'Submarine Helm', 'Cruise Ship Helm', 'Motorboat Helm',
                      'Military Tactics', 'Naval Tactics', 'Bionetics', 'Civil Construction', 'Space Construction', 'Hydroponics', 'Polymers', 'Belter']
     
-    grinder = {
-    
+    grinder = {               
                'Agent'      : ['INT', 3, ['Rookie', 'Agent', 'Field Agent', 'Field Agent', 'Special Agent', 'Assistant Director', 'Director'],
                               ['Administrating', 'Carousing', 'Telecomm', 'Computer Training', 'Deceiving', 'Investigating', 'Language',
                                'Streetwise', 'Slug Pistol', 'Energy Pistol', 'Vilani Language', 'Zdetl Language', 'Small Craft Piloting',
@@ -237,7 +236,12 @@ def app():
                                'Small Craft Piloting', 'Physics', 'Chemisty', 'Computer Science', 'Biology', 'Cybernetics', 'Genetics', 'Psionicology', 'Archeology', 'Economics', 'History', 'Linguistics',
                                'Philosophy', 'Psychology', 'Political Science', 'Planetology', 'Robotics', 'Xenology', 'Bionetics', 'Hydroponics']],
                'Scout'      : ['END', 3, ['Trainee', 'Scout', 'Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout', 'Senior Scout'],
-                              ['Jack of all Trades', 'Biff']]
+                              ['Athletics', 'Astrogating', 'Telecomm', 'Computer Training', 'Diplomacy', 'Driving', 'Flying', 'Jack of all Trades',
+                               'Language', 'Life Sciences', 'Medical Training', 'Navigating', 'Piloting', 'Physical Sciences', 'Reconnaissance',
+                               'Remote Operating', 'Seafaring', 'Sensor Reading', 'Space Sciences', 'Survival Training', 'Vacc Suit Training', 'Zero-G Training',
+                               'Animal Riding', 'Athletic Co-ord', 'Jumpspace', 'Life Support', 'Slug Rifle', 'Anglic Language', 'Vilani Language',
+                               'Zdetl Language', 'Roto Flying', 'Small Craft Piloting', 'Spacecraft Piloting', 'Biology', 'Archeology', 'History',
+                               'Linguistics', 'Planetology', 'Xenology']]               
               }
     
     social_standing_male = ['NOT USED','NOT USED','NOT USED','NOT USED','NOT USED','NOT USED',
