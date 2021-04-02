@@ -23,8 +23,8 @@ from bottle import route, run, template, get, post, request
 
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'TravLITE 0.1.2'
 __version__ = '0.1.2'
+__app__ = 'TravLITE ' + __version__
 
 
 def app():
@@ -362,20 +362,19 @@ def app():
 
     @get('/generate')
     def input_sex_and_number():
-        return '''
-            <br><br>
-            <h1>TravLite 0.1.1</h1>
-            <form action="/generate" method="post">
-                <br>
-                <label for="sex_chosen">Sex (Male, Female, Random):</label><br>
-                <input type="text" name="sex_chosen" value="Random"><br><br>
-                <label for="no_of_npcs">How many NPCs (1 - 50):</label><br>
-                <input type="text" name="no_of_npcs" value="10"><br><br>
-                <label for="roll_type">Characteristic Roll (2d6, Boon, 1d6+6, etc):</label><br>
-                <input type="text" name="roll_type" value="2d6"><br><br>
-                <input value="Generate" type="submit">
-            </form>
-        '''
+        return '''<br><br>
+<h1>''' + __app__ + '''</h1>
+<form action="/generate" method="post">
+    <br>
+    <label for="sex_chosen">Sex (Male, Female, Random):</label><br>
+    <input type="text" name="sex_chosen" value="Random"><br><br>
+    <label for="no_of_npcs">How many NPCs (1 - 100):</label><br>
+    <input type="text" name="no_of_npcs" value="10"><br><br>
+    <label for="roll_type">Characteristic Roll (2d6, Boon, 1d6+6, etc):</label><br>
+    <input type="text" name="roll_type" value="2d6"><br><br>
+    <input value="Generate" type="submit">
+</form>
+'''
     
     @post('/generate') # or @route('/generate', method='POST')
     def do_generation():
@@ -390,7 +389,7 @@ def app():
         else:
             no_of_npcs = int(no_of_npcs)
 
-        if check_number(no_of_npcs, 1, 50):
+        if check_number(no_of_npcs, 1, 100):
             if sex_chosen == 'Random':
                 random_sex = True
             else:
@@ -583,7 +582,7 @@ def app():
                 return "<p><br><br>Enter Sex. Not gender, please.</p>"
                                        
         else:
-            return "<p><br><br>Enter a value of 1 to 50 NPCs, please.</p>"
+            return "<p><br><br>Enter a value of 1 to 100 NPCs, please.</p>"
 
     run(host='localhost', port='8080')
 
