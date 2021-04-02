@@ -39,3 +39,9 @@ develop-eggs/
 ## Jython
 ############
 *.class
+
+
+#############
+## Temp Files
+#############
+bdist.win32

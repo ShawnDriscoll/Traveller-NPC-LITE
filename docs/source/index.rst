@@ -17,7 +17,7 @@ This documentation explains how to install and use **TravLITE** for Traveller NP
 .. image:: python_classic_2_5_tag.png
     :target: https://www.python.org/download/releases/2.5.4/
     
-.. image:: release_v0_1_1_tag.png
+.. image:: release_v0_1_2_tag.png
 
 .. image:: https://readthedocs.org/projects/travliteguide/badge/?version=latest
     :target: http://travliteguide.readthedocs.io/en/latest/?badge=latest

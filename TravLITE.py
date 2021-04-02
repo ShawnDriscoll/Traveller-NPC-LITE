@@ -1,5 +1,5 @@
 #
-# LITE chargen app for Traveller NPCs v0.1.1.
+# LITE chargen app for Traveller NPCs v0.1.2.
 # https://github.com/ShawnDriscoll/Traveller-NPC-LITE
 #
 # This LITE CharGen for Traveller is a Classic Python 2.5 program for generating
@@ -23,8 +23,8 @@ from bottle import route, run, template, get, post, request
 
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__app__ = 'TravLITE 0.1.1'
-__version__ = '0.1.1'
+__app__ = 'TravLITE 0.1.2'
+__version__ = '0.1.2'
 
 
 def app():
@@ -408,6 +408,11 @@ def app():
                 log.info('no_of_npcs = ' + str(no_of_npcs))
                 log.info('roll_type = ' + roll_type)
                 
+                if no_of_npcs > 1:
+                    npc_list += '''
+<table>
+'''
+                
                 for i in range(no_of_npcs):
                     
                     # What are the six characteristics for this NPC?
@@ -503,7 +508,11 @@ def app():
                                            # hex_code[characteristic['INT']] + \
                                            # hex_code[characteristic['EDU']] + \
                                            # noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, job, terms)
-                    
+                    if no_of_npcs > 1:
+                        npc_list += '''<tr>
+    <td>''' + '%s.<br><br><br><br><br><br></td>' % (i + 1)
+                        npc_list += '''
+    <td>'''
                     npc_list += full_name + ' [' + hex_code[characteristic['STR']] + \
                                                    hex_code[characteristic['DEX']] + \
                                                    hex_code[characteristic['END']] + \
@@ -560,8 +569,14 @@ def app():
                             skill_count = 0
                     npc_list = npc_list[0:len(npc_list) - 2] + '<br><br><br>'
                     #print
+                    if no_of_npcs > 1:
+                        npc_list += '''</td>
+'''
                                            
                 #return "<p>It worked!</p>"
+                if no_of_npcs > 1:
+                    npc_list += '''</tr>
+</table>'''
                 return npc_list
                 
             else:

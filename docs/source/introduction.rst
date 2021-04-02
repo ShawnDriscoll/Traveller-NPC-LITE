@@ -67,10 +67,10 @@ Installing
 
 Installing and using **TravLITE** seems simple enough. Just download the archive from `GitHub
 <https://github.com/ShawnDriscoll/Traveller-NPC-LITE/>`__ and extract it to a folder you prefer. If
-you have Classic Python 2.5.4 installed, you can start TravLITE.py from a CMD prompt or double-click
+you have Classic Python 2.5.4 installed, you can start ``TravLITE.py`` from a CMD prompt or double-click
 the Python script.
 
-Alternatively, if you do not have Classic Python 2.5.4, you can start TravLITE.exe (located in the
+Alternatively, if you do not have Classic Python 2.5.4, you can start ``TravLITE.exe`` (located in the
 dist folder) from a CMD prompt or by double-clicking the executable program.
 
 Either way, a web server will start. Then open your web browser and enter http://localhost:8080/generate
