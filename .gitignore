@@ -44,4 +44,4 @@ develop-eggs/
 #############
 ## Temp Files
 #############
-bdist.win32
+temp/
