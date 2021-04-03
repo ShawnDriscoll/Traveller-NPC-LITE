@@ -1,5 +1,5 @@
 #
-# LITE chargen app for Traveller NPCs v0.1.2.
+# LITE chargen app for Traveller NPCs v0.2.0.
 # https://github.com/ShawnDriscoll/Traveller-NPC-LITE
 #
 # This LITE CharGen for Traveller is a Classic Python 2.5 program for generating
@@ -20,10 +20,11 @@ import os
 import logging
 from random import randint
 from bottle import route, run, template, get, post, request
+import simplejson as json
 
 
 __author__ = 'Shawn Driscoll <shawndriscoll@hotmail.com>\nshawndriscoll.blogspot.com'
-__version__ = '0.1.2'
+__version__ = '0.2.0'
 __app__ = 'TravLITE ' + __version__
 
 
@@ -170,23 +171,7 @@ def app():
     #left_career = []
     
     background_skills = ['Animals', 'Zero-G Training', 'Survival Training', 'Seafarer', 'Computer Training', 'Streetwise', 'Vacc Suit Training', 'Profession', 'Carousing']
-    
-    skills = ['Administrating', 'Advocating', 'Animals', 'Athletics', 'Art', 'Astrogating', 'Battle Suit Training', 'Trading', 'Carousing',
-              'Telecomm', 'Computer Training', 'Deceiving', 'Diplomacy', 'Driving', 'Engineering', 'Explosives', 'Flying', 'Gambling',
-              'Gunnery', 'Gun Fighting', 'Heavy Weapons', 'Investigating', 'Jack of all Trades', 'Language', 'Leadership',
-              'Life Sciences', 'Mechanical Training', 'Medical Training', 'Melee', 'Navigating', 'Persuading', 'Piloting', 'Physical Sciences',
-              'Reconnaissance', 'Remote Operating', 'Seafaring', 'Sensor Reading', 'Social Sciences', 'Space Sciences', 'Stealth',
-              'Companion', 'Streetwise', 'Survival Training', 'Tactics', 'Profession', 'Vacc Suit Training', 'Zero-G Training',
-              'Animal Riding', 'Veterinary', 'Animal Training', 'Animal Farming', 'Athletic Co-ord', 'Athletic Endurance', 'Athletic Strength', 'Jumping',
-                     'Acting', 'Dancing', 'Holography', 'Musical Training', 'Sculpting', 'Writing', 'Mole Trucking', 'Tank Driving', 'Autocar Driving',
-                     'Gravitics', 'Jumpspace', 'Electronics', 'Life Support', 'Energy', 'Grav Flying', 'Roto Flying', 'Aero Flying',
-                     'Turret Gunnery', 'Ortillery Gunnery', 'Ship Screens', 'Capital Weapons', 'Slug Rifle', 'Slug Pistol', 'Shotgun', 'Energy Rifle', 'Energy Pistol',
-                     'Heavy Launchers', 'Portable Artillery', 'Field Artillery', 'Anglic Language', 'Vilani Language', 'Zdetl Language', 'Oynprith Language',
-                     'Fist Fighting', 'Knife Fighting', 'Blunt Fighting', 'Sword Fighting', 'Small Craft Piloting', 'Spacecraft Piloting', 'Capital Ship Helm',
-                     'Physics', 'Chemisty', 'Computer Science', 'Biology', 'Cybernetics', 'Genetics', 'Psionicology', 'Archeology', 'Economics', 'History', 'Linguistics',
-                     'Philosophy', 'Psychology', 'Political Science', 'Planetology', 'Robotics', 'Xenology', 'Sailboat Helm', 'Submarine Helm', 'Cruise Ship Helm', 'Motorboat Helm',
-                     'Military Tactics', 'Naval Tactics', 'Bionetics', 'Civil Construction', 'Space Construction', 'Hydroponics', 'Polymers', 'Belter']
-    
+
     grinder = {               
                'Agent'      : ['INT', 3, ['Rookie', 'Agent', 'Field Agent', 'Field Agent', 'Special Agent', 'Assistant Director', 'Director'],
                               ['Administrating', 'Carousing', 'Telecomm', 'Computer Training', 'Deceiving', 'Investigating', 'Language',
@@ -377,7 +362,7 @@ def app():
 '''
     
     @post('/generate') # or @route('/generate', method='POST')
-    def do_generation():
+    def do_generation():        
         sex_chosen = request.forms.get('sex_chosen')
         no_of_npcs = request.forms.get('no_of_npcs')
         roll_type = request.forms.get('roll_type')
@@ -396,9 +381,15 @@ def app():
                 random_sex = False
         
             if sex_chosen in ['Random', 'Male', 'Female']:
+            
+                if not os.path.exists('data'):
+                    os.mkdir('data')
+        
+                json_file_out = open('data/TravLITE_NPCs.json', 'w')
                
                 # Start with a blank slate
-                
+                trav_rec = {}
+                trav_rec['NPCs'] = []
                 npc_list = '<br>'
                 
                 # NPC generation loop
@@ -518,11 +509,30 @@ def app():
                                                    hex_code[characteristic['INT']] + \
                                                    hex_code[characteristic['EDU']] + \
                                                    noble_hex_code[characteristic['SOC']] + ']<br>%s, age %d, %s class' % (sex, age, social_class[vp_soc])
+                    
+                    # trav_rec['Traveller_Name'] = full_name
+                    # trav_rec['STR'] = hex_code[characteristic['STR']]
+                    # trav_rec['DEX'] = hex_code[characteristic['DEX']]
+                    # trav_rec['END'] = hex_code[characteristic['END']]
+                    # trav_rec['INT'] = hex_code[characteristic['INT']]
+                    # trav_rec['EDU'] = hex_code[characteristic['EDU']]
+                    # trav_rec['SOC'] = noble_hex_code[characteristic['SOC']]
+                    # trav_rec['Sex'] = sex
+                    # trav_rec['Age'] = age
+                    # trav_rec['Social_Class'] = social_class[vp_soc]
+                    # trav_rec['Terms'] = 0
                                                    
                     if terms > 0:
                         npc_list += ', %d-term %s' % (terms, job)
+                        
+                        #trav_rec['Terms'] = terms
+                        
                     npc_list += '<br>'
-                                                   
+                                    
+                    #trav_rec['Career'] = job
+                    
+                    trained_skills = {}
+                    
                     # Sort skill list
                     skill_item = []
                     skill_amount = []
@@ -562,22 +572,56 @@ def app():
                     for i in range(key_count):
                         #print skill_item[i], skill_amount[i]
                         npc_list += '%s %d, ' % (skill_item[i], skill_amount[i])
+                        
+                        trained_skills[skill_item[i]] = skill_amount[i]
+                        
                         skill_count += 1
                         if skill_count == 6 and i <> key_count - 1:
                             npc_list += '<br>'
                             skill_count = 0
                     npc_list = npc_list[0:len(npc_list) - 2] + '<br><br><br>'
+                    
+                    #trav_rec['Skills'] = trained_skills
+                    
                     #print
                     if no_of_npcs > 1:
                         npc_list += '''</td>
 '''
-                                           
+                    if terms > 0:
+                        temp_terms = terms
+                    else:
+                        temp_terms = 0
+
+                    trav_rec['NPCs'].append({
+                    'Traveller_Name': full_name,
+                    'STR': hex_code[characteristic['STR']],
+                    'DEX': hex_code[characteristic['DEX']],
+                    'END': hex_code[characteristic['END']],
+                    'INT': hex_code[characteristic['INT']],
+                    'EDU': hex_code[characteristic['EDU']],
+                    'SOC': noble_hex_code[characteristic['SOC']],
+                    'Sex': sex,
+                    'Age': age,
+                    'Social_Class': social_class[vp_soc],
+                    'Terms': temp_terms,
+                    'Career': job,
+                    'Skills': trained_skills
+                    })
+                    
+                    
+                    
+                    log.info(full_name + ' was generated.')
+                    
                 #return "<p>It worked!</p>"
                 if no_of_npcs > 1:
                     npc_list += '''</tr>
 </table>'''
-                return npc_list
+                json.dump(trav_rec, json_file_out, ensure_ascii = True)
                 
+                json_file_out.close()
+                
+                return npc_list
+
             else:
                 return "<p><br><br>Enter Sex. Not gender, please.</p>"
                                        

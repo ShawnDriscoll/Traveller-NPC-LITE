@@ -1,7 +1,7 @@
 .. image:: docs/source/python_classic_2_5_tag.png
     :target: https://www.python.org/download/releases/2.5.4/
     
-.. image:: docs/source/release_v0_1_2_tag.png
+.. image:: docs/source/release_v0_2_0_tag.png
     :target: https://readthedocs.org/projects/travliteguide/downloads/pdf/latest
     
 .. image:: https://readthedocs.org/projects/travliteguide/badge/?version=latest
@@ -10,7 +10,7 @@
 
 
 
-**TravLITE 0.1.2: CharGen for Traveller**
+**TravLITE 0.2.0: CharGen for Traveller**
 =========================================
 
 .. figure:: images/travlite_book_cover_art.png
