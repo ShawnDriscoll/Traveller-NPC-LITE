@@ -147,7 +147,6 @@ def app():
                         add_skill(job, skill, 1)
             else:
                 add_skill(job, skill, 1)
-        #print skill
             
         return terms, age, name_title, job, skill
         
@@ -167,9 +166,7 @@ def app():
     
     career = ['Agent', 'Army', 'Citizen', 'Drifter', 'Entertainer', 'Marines', 'Merchants', 'Navy', 'Nobility',
               'Rogue', 'Scholar', 'Scout']
-    #career_count = len(career)
-    #left_career = []
-    
+
     background_skills = ['Animals', 'Zero-G Training', 'Survival Training', 'Seafarer', 'Computer Training', 'Streetwise', 'Vacc Suit Training', 'Profession', 'Carousing']
 
     grinder = {               
@@ -262,8 +259,6 @@ def app():
     
     male = 'Male'
     female = 'Female'
-    #random_sex = True
-    #sex_chosen = 'Random'
     sex = ''
     
     # Characteristic Names
@@ -345,8 +340,16 @@ def app():
         else:
             return False
 
+# Set defalt generation values that can be changed as needed for input
+
     @get('/generate')
-    def input_sex_and_number():
+    def input_gen_variables():
+        '''
+        Variables needed for NPC generation are:
+            Sex
+            Number of NPCs to generate
+            Characteristic roll type
+        '''
         return '''<br><br>
 <h1>''' + __app__ + '''</h1>
 <form action="/generate" method="post">
@@ -360,9 +363,14 @@ def app():
     <input value="Generate" type="submit">
 </form>
 '''
+
+# Start NPC generation
     
     @post('/generate') # or @route('/generate', method='POST')
-    def do_generation():        
+    def do_generation():   
+        '''
+        Get the form values from the web browser and begin NPC generation
+        '''
         sex_chosen = request.forms.get('sex_chosen')
         no_of_npcs = request.forms.get('no_of_npcs')
         roll_type = request.forms.get('roll_type')
@@ -457,7 +465,12 @@ def app():
                         if random_sex:
                             sex_chosen = sex
                     
+                    # Randomize the starting age of NPC
+                    
                     age = 18 + roll('1D4') - roll('1D4')
+                    
+                    # Get their social class
+                    
                     vp_soc = characteristic['SOC']
                     # print '[' + hex_code[characteristic['STR']] + \
                                 # hex_code[characteristic['DEX']] + \
@@ -465,8 +478,14 @@ def app():
                                 # hex_code[characteristic['INT']] + \
                                 # hex_code[characteristic['EDU']] + \
                                 # noble_hex_code[characteristic['SOC']] + ']', age, social_class[vp_soc]
-                                                                    
+                    
+                    # Grind the NPC down (age them)
+                    
                     terms, age, name_title, job, skill = grind(characteristic, age)
+                    
+                    # Spit out their number of terms, their age, their title, job, and skills
+                    
+                    # Now make a full name for the NPC based on their life
 
                     if characteristic['SOC'] > 10:
                         if sex == male:
@@ -491,13 +510,7 @@ def app():
                                 full_name = first_name + ' ' + last_name
                         else:
                             full_name = name_title + ' ' + first_name + ' ' + chr(randint(1,26) + 64) + '. ' + last_name
-                            
-                    # print full_name, '[' + hex_code[characteristic['STR']] + \
-                                           # hex_code[characteristic['DEX']] + \
-                                           # hex_code[characteristic['END']] + \
-                                           # hex_code[characteristic['INT']] + \
-                                           # hex_code[characteristic['EDU']] + \
-                                           # noble_hex_code[characteristic['SOC']] + ']', age, '(%s), %s, %d terms\n' % (sex, job, terms)
+
                     if no_of_npcs > 1:
                         npc_list += '''<tr>
     <td>''' + '%s.<br><br><br><br><br><br></td>' % (i + 1)
@@ -509,27 +522,11 @@ def app():
                                                    hex_code[characteristic['INT']] + \
                                                    hex_code[characteristic['EDU']] + \
                                                    noble_hex_code[characteristic['SOC']] + ']<br>%s, age %d, %s class' % (sex, age, social_class[vp_soc])
-                    
-                    # trav_rec['Traveller_Name'] = full_name
-                    # trav_rec['STR'] = hex_code[characteristic['STR']]
-                    # trav_rec['DEX'] = hex_code[characteristic['DEX']]
-                    # trav_rec['END'] = hex_code[characteristic['END']]
-                    # trav_rec['INT'] = hex_code[characteristic['INT']]
-                    # trav_rec['EDU'] = hex_code[characteristic['EDU']]
-                    # trav_rec['SOC'] = noble_hex_code[characteristic['SOC']]
-                    # trav_rec['Sex'] = sex
-                    # trav_rec['Age'] = age
-                    # trav_rec['Social_Class'] = social_class[vp_soc]
-                    # trav_rec['Terms'] = 0
                                                    
                     if terms > 0:
                         npc_list += ', %d-term %s' % (terms, job)
                         
-                        #trav_rec['Terms'] = terms
-                        
                     npc_list += '<br>'
-                                    
-                    #trav_rec['Career'] = job
                     
                     trained_skills = {}
                     
@@ -541,17 +538,11 @@ def app():
                         skill_amount.append(-1)
                         
                     key_count = 0
-                    #print skill
-                    #print
                     for key in skill:
                         #print key, skill[key]
                         skill_item[key_count] = key
                         skill_amount[key_count] = skill[key]
                         key_count += 1
-                    
-                    # for i in range(key_count):
-                        # print skill_item[i], skill_amount[i]
-                    # print
                     
                     key_count -= 1
                     swapping = True
@@ -570,7 +561,6 @@ def app():
                     key_count += 1
                     skill_count = 0
                     for i in range(key_count):
-                        #print skill_item[i], skill_amount[i]
                         npc_list += '%s %d, ' % (skill_item[i], skill_amount[i])
                         
                         trained_skills[skill_item[i]] = skill_amount[i]
@@ -580,10 +570,7 @@ def app():
                             npc_list += '<br>'
                             skill_count = 0
                     npc_list = npc_list[0:len(npc_list) - 2] + '<br><br><br>'
-                    
-                    #trav_rec['Skills'] = trained_skills
-                    
-                    #print
+
                     if no_of_npcs > 1:
                         npc_list += '''</td>
 '''
