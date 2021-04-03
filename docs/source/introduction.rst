@@ -53,6 +53,11 @@ Requirements
 * **colorama 0.2.7**
 
    Because CMD may have some colored text messages for debugging.
+
+* **simplejson 3.11.1**
+
+   Used for saving data in JSON format. This feature was introduced
+   in release 0.2.0.
    
 * **py2exe 0.6.9**
 

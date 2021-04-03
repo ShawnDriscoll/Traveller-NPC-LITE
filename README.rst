@@ -39,6 +39,10 @@ Requirements
 
    Because the dice roller may have some colored text messages for debugging.
    
+* **simplejson 3.11.1**
+
+   Used for saving data in JSON format. Beginning with release 0.2.0.
+   
 * **py2exe 0.6.9**
 
    Used by setup_TL.py for making EXEs of the Python code for you. Optional.
