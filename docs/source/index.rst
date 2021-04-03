@@ -35,4 +35,6 @@ Future Enterprises.
    installing
    tutorial
    saveddata
+   license
+   ffe
    about_the_author
