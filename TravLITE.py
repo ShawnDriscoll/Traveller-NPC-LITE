@@ -352,8 +352,8 @@ def app():
         '''
         return '''<html>
 <head>
-<link href='images/favicon.ico' rel='icon' type='image/x-icon'/>
 <title>''' + __app__ + '''</title>
+<link href='https://shawndriscollrpg.blogspot.com/favicon.ico' rel='icon' type='image/x-icon'/>
 </head>
 <body>
 <br><br>
@@ -407,12 +407,14 @@ def app():
                 trav_rec['NPCs'] = []
                 npc_list = '''<html>
 <head>
-<title>''' + str(no_of_npcs)
+'''
                 if no_of_npcs > 1:
-                    npc_list += ''' NPCs '''
+                    npc_list += '''<title>''' + str(no_of_npcs) + ''' NPCs Were'''
                 else:
-                    npc_list += ''' NPC '''
-                npc_list += '''Generated</title>
+                    npc_list += '''<title>Only One NPC Was'''
+                npc_list += ''' Generated</title>
+<link href='https://shawndriscollrpg.blogspot.com/favicon.ico' rel='icon' type='image/x-icon'/>
+</head>
 <body>
 <br>'''
                 
@@ -618,7 +620,8 @@ def app():
                 #return "<p>It worked!</p>"
                 if no_of_npcs > 1:
                     npc_list += '''</tr>
-</table>
+</table>'''
+                npc_list += '''
 </body>
 </html>'''
                 json.dump(trav_rec, json_file_out, ensure_ascii = True)
