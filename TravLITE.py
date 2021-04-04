@@ -407,7 +407,12 @@ def app():
                 trav_rec['NPCs'] = []
                 npc_list = '''<html>
 <head>
-<title>''' + str(no_of_npcs) + ''' NPCs Generated</title>
+<title>''' + str(no_of_npcs)
+                if no_of_npcs > 1:
+                    npc_list += ''' NPCs '''
+                else:
+                    npc_list += ''' NPC '''
+                npc_list += '''Generated</title>
 <body>
 <br>'''
                 
