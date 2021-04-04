@@ -350,7 +350,13 @@ def app():
             Number of NPCs to generate
             Characteristic roll type
         '''
-        return '''<br><br>
+        return '''<html>
+<head>
+<link href='images/favicon.ico' rel='icon' type='image/x-icon'/>
+<title>''' + __app__ + '''</title>
+</head>
+<body>
+<br><br>
 <h1>''' + __app__ + '''</h1>
 <form action="/generate" method="post">
     <br>
@@ -362,7 +368,8 @@ def app():
     <input type="text" name="roll_type" value="2d6"><br><br>
     <input value="Generate" type="submit">
 </form>
-'''
+</body>
+</html>'''
 
 # Start NPC generation
     
@@ -398,7 +405,11 @@ def app():
                 # Start with a blank slate
                 trav_rec = {}
                 trav_rec['NPCs'] = []
-                npc_list = '<br>'
+                npc_list = '''<html>
+<head>
+<title>''' + str(no_of_npcs) + ''' NPCs Generated</title>
+<body>
+<br>'''
                 
                 # NPC generation loop
                 
@@ -602,7 +613,9 @@ def app():
                 #return "<p>It worked!</p>"
                 if no_of_npcs > 1:
                     npc_list += '''</tr>
-</table>'''
+</table>
+</body>
+</html>'''
                 json.dump(trav_rec, json_file_out, ensure_ascii = True)
                 
                 json_file_out.close()
