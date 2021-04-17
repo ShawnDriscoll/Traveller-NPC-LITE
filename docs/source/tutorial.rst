@@ -38,7 +38,7 @@ The generated NPCs will output in this format:
 NPC names typically will start with a title, depending on their career or their social standing. Characters of nobility
 will have longer names and include the homeworld they are from.
 
-Next is the NPC's UPP, their sex, and age. The social class that an NPC was raised in is shown, along with how many terms
+Next is the NPC's UPP, their sex, and age. The social class that the NPC was raised in is shown, along with how many terms
 they were in a career.
 
 And last is the NPC's list of skills.
