@@ -16,7 +16,7 @@
 .. figure:: images/travlite_book_cover_art.png
 
 
-This **TravLITE** is a Classic Python 2.5 program for generating NPCs for Traveller. Running in a web browser is now being tested with this release.
+**TravLITE** is a Classic Python 2.5 program for generating NPCs for Traveller. Running in a web browser is now being tested with this release.
 
 Read the **TravLITE Guide** at http://travliteguide.readthedocs.io
 
