@@ -38,7 +38,7 @@ develop-eggs/
 ############
 ## Jython
 ############
-*.class
+*$py.class
 
 
 #############
