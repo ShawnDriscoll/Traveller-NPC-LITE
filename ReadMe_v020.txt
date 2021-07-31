@@ -2,7 +2,7 @@
 This program has been tested on Windows 10.
 
 
-To use this program, run the travLITE.exe file either at the CMD prompt or by double-clicking. Then open your web browser to http://localhost:8080/generate
+To use this program, run the TravLITE.exe file either at the CMD prompt or by double-clicking. Then open your web browser to http://localhost:8080/generate
 
 If a file is reported missing, such as MSVCP71.dll, copy the file to your C:\Windows\System32 folder.  Then run again.
 
