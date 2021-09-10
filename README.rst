@@ -8,6 +8,8 @@
     :target: http://travliteguide.readthedocs.io/en/latest/?badge=latest
     :alt: Doc Status
 
+.. image:: https://img.shields.io/github/stars/ShawnDriscoll/Traveller-NPC-LITE.svg
+	:target: https://github.com/ShawnDriscoll/Traveller-NPC-LITE/stargazers
 
 
 **TravLITE 0.2.0: CharGen for Traveller**
